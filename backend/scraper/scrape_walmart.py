@@ -35,12 +35,13 @@ for info in extraInfo:
   extraInfoList.append(info.text)
 print(extraInfoList)
 
-#Finds the price per pound of the item
+
 dollars = soup.find('span', {'class': 'price-characteristic'}).text
 cents = soup.find('span', {'class': 'price-mantissa'}).text
 price = float(dollars + '.' + cents)
 print(price)
 
+#Finds the price per pound of the item
 pricePerPound = soup.find('div', {'class': 'prod-ProductOffer-ppu'}).text
 print(pricePerPound)
 print(float(pricePerPound[1:5]))
