@@ -12,7 +12,7 @@ def parseLink(url):
     price = float(dollars + '.' + cents)
 
     #Return dictionary of product information
-    product_details = { 'product-title' : product_title, 'price' : str(price), 'rating' : rating}
+    product_details = {'product-title' : product_title, 'price' : str(price), 'rating' : rating}
     return product_details
 
 def getProducts(query):
@@ -25,12 +25,15 @@ def getProducts(query):
         products.append(parseLink("https://walmart.com" + links.get('href')))
     #Return list of dictionaries
     return products
+
+'''    
 # Execution of Main Program
-query = "lettuce"
-products = getProducts(query)
+test_query = "lettuce"
+products = getProducts(test_query)
 
 for item in products:
     print("Item Name: " + item['product-title'])
     print("Price: " + item['price'])
     print("Rating: " + item['rating'])
     print("")
+'''
