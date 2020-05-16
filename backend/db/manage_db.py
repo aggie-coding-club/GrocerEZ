@@ -26,7 +26,7 @@ session = Session()
 
 base.metadata.create_all(db)
 
-arjun_item = Item(name='arjun', price=0, priceperunit=0, store='vag')
+arjun_item = Item(name='arjun', price=0, priceperunit=0, store='mom')
 session.add(arjun_item)
 session.commit()
 
