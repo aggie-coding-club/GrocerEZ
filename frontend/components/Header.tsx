@@ -1,18 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { Toolbar } from 'react-native-material-ui';
-
+import { Appbar } from 'react-native-paper';
 import StoreSelector from './singleMultiStoreSelector';
 
 export default function Header() {
   return (
-    <Toolbar style={{ container: { backgroundColor: "white", justifyContent: "space-between", alignItems: "center", flexDirection: "row"}, leftElement: {color: "black"}, titleText: {color: "black"}}}
-        leftElement = "menu"
-        centerElement = "GrocerEZ"
-        rightElement = {
-            <StoreSelector/>
-        }
-    />
+
+    <Appbar.Header>
+        <Appbar.Action icon="menu" />
+        <Appbar.Content title="GrocerEZ" />
+        <StoreSelector/>
+    </Appbar.Header>
     
   );
 }
