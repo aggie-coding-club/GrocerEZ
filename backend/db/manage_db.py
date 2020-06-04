@@ -14,7 +14,11 @@ import psycopg2
 
 app = Flask(__name__)
 
-db_string = "postgres://xpcdulaqqancpa:0616d8130a659a869dacb11768aaf0d8f87f741b19fc8bf46d3af34c78f5ca85@ec2-34-200-72-77.compute-1.amazonaws.com:5432/ddjr78vh1cvcc4"
+# read in password from config file
+config = open('db_password', 'r')
+db_password = config.readline().strip()
+
+db_string = "postgres://xpcdulaqqancpa:"+ db_password +"@ec2-34-200-72-77.compute-1.amazonaws.com:5432/ddjr78vh1cvcc4"
 app.config['SQLALCHEMY_DATABASE_URI'] = db_string
 app.config['SQLALCHEMY TRACK_MODIFICATIONS'] = False
 
