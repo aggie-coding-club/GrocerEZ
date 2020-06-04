@@ -1,6 +1,7 @@
 from flask import Flask
 from sqlalchemy import create_engine  
-from sqlalchemy import Column, String, Float  
+from sqlalchemy import Column, String, Float, Boolean
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
@@ -26,7 +27,7 @@ manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 
-class Item(base):
+class Item(db.Model):
   __tablename__ = 'Item'
 
   __mapper_args__ = {
@@ -37,6 +38,29 @@ class Item(base):
   price = Column(Float)
   priceperunit = Column(Float)
   store = Column(String)
+
+class store(db.Model):
+  __tablename__ = 'store'
+
+  __mapper_args__ = {
+    'confirm_deleted_rows': False
+  }
+
+  name = Column(String, primary_key=True)
+  location = Column(Float)
+  delivery = Column(Boolean)
+  pickup = Column(Boolean)
+
+class uuid(db.Model):
+  __tablename__ = 'name'
+
+  __mapper_args__ = {
+    'confirm_deleted_rows': False
+  }
+
+  name = Column(String, primary_key=True)
+  uuid = Column(UUID)
+
 
 #Session = sessionmaker(db)
 #session = Session()
