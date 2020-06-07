@@ -2,8 +2,8 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native';
-import Header from './components/Header';
+import {HeaderNav} from './components/HeaderNav';
+import {headerStates} from './components/States';
 
 const theme = {
   ...DefaultTheme,
@@ -18,11 +18,9 @@ const theme = {
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
         <SafeAreaView style={styles.container}>
-          <Header />
+          <HeaderNav currState={headerStates.search}/>
         </SafeAreaView>
-      </NavigationContainer>
     </PaperProvider>
   );
 }

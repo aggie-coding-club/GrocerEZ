@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableHighlight, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Svg, { Path } from 'react-native-svg';
 
