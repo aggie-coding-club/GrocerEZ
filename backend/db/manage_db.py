@@ -9,13 +9,12 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 from flask_sqlalchemy import SQLAlchemy
-
 import psycopg2
 
 app = Flask(__name__)
 
 # read in password from config file
-config = open('db_password', 'r')
+config = open('db_password.txt', 'r')
 db_password = config.readline().strip()
 
 db_string = "postgres://xpcdulaqqancpa:"+ db_password +"@ec2-34-200-72-77.compute-1.amazonaws.com:5432/ddjr78vh1cvcc4"
@@ -31,8 +30,8 @@ manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 
-class Item(db.Model):
-  __tablename__ = 'Item'
+class item(db.Model):
+  __tablename__ = 'item'
 
   __mapper_args__ = {
     'confirm_deleted_rows': False
@@ -65,23 +64,6 @@ class uuid(db.Model):
   name = Column(String, primary_key=True)
   uuid = Column(UUID)
 
-
-#Session = sessionmaker(db)
-#session = Session()
-
-#base.metadata.create_all(db)
-
-#arjun_item = Item(name='arjun', price=0, priceperunit=0, store='mom')
-#session.add(arjun_item)
-#session.commit()
-
-#test = session.query(Item).get('Srikar')
-#test.name = 'arjun'
-#session.commit()
-
-#items = session.query(Item)
-#for item in items:
-#  print(item.name)
 
 if __name__ == '__main__':
   manager.run()
