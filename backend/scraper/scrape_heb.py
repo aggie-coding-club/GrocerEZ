@@ -1,29 +1,24 @@
 from bs4 import BeautifulSoup
 import requests
 
-# The goal is to have a get_products functions that returns a list of prices given a string query,
-# Parse_link function that gets the name, price,
-# price per unit, and image URL of a specific item. See Ryan's Walmart scraper for examples.
-
 # HEB Scraper Class
 class HEBScraper():
     def __init__(self):
         pass
 
-    def getProudcts(self, product):
+    def getProduct(self, product):
         # Get the links of all items of this type
         product_links = []
         self.getLinks(product, product_links)
 
-        # Use the links to parse and obtain information
-        item_details = []
-        for product in product_links:
-            item_details.append(self.parseLink(product))
+        # Use the links to parse and obtain information (Using List Comprehensions)
+        item_details = [self.parseLink(product) for product in product_links]
 
         return item_details
 
     def getLinks(self, link_name, url_links):
         # Link to the given bs4, making sure that it isn't the first page
+        # Pages differ in No=__ & Ntt=__&q=__
         if '/search' in link_name:
             url = "https://www.heb.com" + link_name
         else:
@@ -54,47 +49,69 @@ class HEBScraper():
 
         # Find values of each attribute
 
-        # Get the products name
+       # Get the products name
         try:
             title_section = soup.find('h1', {'itemprop': 'name'})
             product_title = title_section.text
         except:
-            product_title = "N/A"
+            product_title = None
             pass
 
         # Get the products price
         try:
             price = soup.find('div', {'class': 'sale2'})
-            priceString = ' '.join(price.text.split())
+            price_string = ' '.join(price.text.split())
         except:
-            priceString = "N/A"
+            price_string = None
             pass
 
         # Get the products image
+        # Fixed issue where the code picked up the image tag instead of the actual item image
         try:
             image = soup.find('div', {'class' : 'pdp-mobile-image-container'})
-            image_link = image.img.get('src')
+            image_link = image.find('img', {'class' : 'pdp-mobile-image'})
+            image_link = image_link.get('src')
         except:
-            image_link = 'N/A'
+            image_link = None
             pass
 
         # Get the products rating
-        ratingString = "N/A"
+        rating_string = None
 
 
-        # #Return dictionary of product information
+        # Return dictionary of product information
         product_details = {'product-title': product_title, 'price': priceString, 'image': image_link, 'rating': ratingString}
         return product_details
 
-# Execution of Main Program
-scraper = HEBScraper()
-product_name = 'lettuce'
-item_list = scraper.getProudcts(product_name)
+# Execution of Main Program with a __name__ guard
+if __name__ == "__main__":
 
-# Printing results
-for item in item_list:
-    print("Item Name: " + item['product-title'])
-    print("Price: " + item['price'])
-    print("Image: " + item['image'])
-    print("Rating: " + item['rating'])
-    print ("")
+    scraper = HEBScraper()
+    product_name = 'lettuce'
+    item_list = scraper.getProduct(product_name)
+
+    # Printing results
+    for item in item_list:
+        # Check if TypeNone and print a statement
+
+        if (item['product-title'] is None):
+            print('Item Name: Could not find the information')
+        else:
+            print("Item Name: " + item['product-title'])
+
+        if (item['price'] is None):
+            print('Price: Could not find the information')
+        else:
+            print("Price: " + item['price'])
+
+        if (item['image'] is None):
+            print('Image: Could not find the information')
+        else:
+            print("Image: " + item['image'])
+
+        if (item['rating'] is None):
+            print('Rating: Could not find the information')
+        else:
+            print("Rating: " + item['rating'])
+
+        print()
