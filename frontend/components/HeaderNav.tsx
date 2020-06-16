@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import StoreSelector from './StoreSelectorButton';
 import { headerStates } from './States';
