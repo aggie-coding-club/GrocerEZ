@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import StoreSelector from './StoreSelectorButton';
 import { headerStates } from './States';
 
+export interface Props {
+    currState: string;
+}
+
 export class HeaderNav extends Component {
     
-    constructor(props) {
-        super(props)
+    constructor(props : Props) {
+        super(props); 
         let currState = headerStates.title;
         if (props != null && props.currState) {
             currState = props.currState;
@@ -55,14 +58,6 @@ export class HeaderNav extends Component {
          );
     }
 }
-
-HeaderNav.defaultProps = {
-    currState: headerStates.title,
-};
-
-HeaderNav.propTypes = {
-    currState: PropTypes.string,
-};
 
 const styles = StyleSheet.create({
 
