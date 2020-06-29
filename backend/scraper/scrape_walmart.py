@@ -6,33 +6,34 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import time
 
-ZIPCODE = '77841'
-
-driver_path = r'C:/Users/Ryan/Desktop/Web Drivers/chromedriver.exe'
+import sys
 
 class WalmartScraper:
     zipSet = False
     def __init__(self):
         chrome_options = Options()
         chrome_options.add_argument('--headless')
-        self.driver = webdriver.Chrome(driver_path, options=chrome_options)
+        try:
+            self.driver = webdriver.Firefox(executable_path=r'.\geckodriver.exe')
+        except:
+            sys.exit("Web Driver is missing")
 
-    def getProduct(self, productName):
-        self.driver.get('https://www.walmart.com/search/?query=' + productName)
-        URLS = self.getProductUrls(productName)
+    def get_product(self, product_name, zip_code):
+        self.driver.get('https://www.walmart.com/search/?query=' + product_name)
+        URLS = self.get_product_urls(product_name)
 
-        productInformation = [] #List of dictionaries, containing product information
+        product_information = [] #List of dictionaries, containing product information
 
         session = requests.Session()
         session.put('https://www.walmart.com/account/api/location',
-                    data={'postalCode': ZIPCODE, 'clientName': 'Web-Header-NDToggleBar', 'persistLocation': 'true'})
+                    data={'postalCode': zip_code, 'clientName': 'Web-Header-NDToggleBar', 'persistLocation': 'true'})
 
         for url in URLS:
-            productInformation.append(self.parseProductLink(url,session))
+            product_information.append(self.parse_product_link(url,session))
 
-        return productInformation
+        return product_information
 
-    def getProductUrls(self, queryString):
+    def get_product_urls(self, queryString):
         self.driver.get('https://www.walmart.com/search/?query=' + queryString)
         URLS = []
         for link in self.driver.find_element_by_class_name('search-product-result').find_elements_by_tag_name('a'):
@@ -41,18 +42,26 @@ class WalmartScraper:
         return URLS
 
     #Requests + selenium combo?
-    def parseProductLink(self, url, session):
+    def parse_product_link(self, url, session):
         print('Opening url: ' + url) #debugging
         page = session.get(url, headers={"User-Agent": "Mozilla/5.0"})
         soup = BeautifulSoup(page.text, 'lxml')
+
+        # Product Title
         try:
             product_title = soup.find(class_='prod-ProductTitle font-normal').get_text()
         except:
-            product_title = 'ERROR: ' + url
+            product_title = 'N/A'
+            print('    ERROR PRODUCT TITLE NOT FOUND: ' + url)
+
+        # Rating
         try:
             rating = soup.find(class_='ReviewsHeader-ratingPrefix font-bold').get_text()
         except:
-            rating = 'ERROR: ' + url
+            rating = 'N/A'
+            print('    ERROR RATING NOT FOUND: ' + url)
+
+        # Price
         dollar = soup.select_one(
             '#price > div > span.hide-content.display-inline-block-m > span > span.price-group > span.price-characteristic')
         cent = soup.select_one(
@@ -61,7 +70,8 @@ class WalmartScraper:
         if (dollar != None and cent != None):
             price = dollar.text + '.' + cent.text
         else:
-            price = 'ERROR: ' + url
+            price = 'N/A'
+            print('    ERROR PRICE NOT FOUND: ' + url)
 
         # Return dictionary of product information
         information = {
@@ -73,12 +83,14 @@ class WalmartScraper:
         }
         return information
 
-    def destructor(self):
-        self.driver.close()
+    def __del__(self):
+        try:
+            self.driver.close()
+        except:
+            print('Driver does not exist')
 
 scraper = WalmartScraper()
-apples = scraper.getProduct('apples')
-scraper.destructor()
+apples = scraper.get_product('apples', '77840')
 for item in apples:
     print("Item Name: " + item['product_title'])
     print("Product ID: " + item['product_identifier'])
