@@ -1,42 +1,45 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {bottomStates} from './States';
+import {bottomStates, globalStates} from '../constants/States';
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { State, Item } from '../constants/Interfaces';
+import { connect, useDispatch } from 'react-redux';
 
-export interface Props {
-    currState: string;
-    numItems?: number;
-    totalPrice?: number;
+interface Props {
+    currState: bottomStates
+    items: Item[]
 }
 
-export class BottomNav extends Component {
-    
-    constructor(props: Props) {
-        super(props)
-        let currState = bottomStates.itemSelection;
-        if (props != null && props.currState) {
-            currState = props.currState;
-        }
-        this.state = {currState};
-    }
+function BottomNav(props: Props) {
+        const dispatch = useDispatch();
 
-    render() {
-        let result;
-        switch (this.state.currState) {
+        let result= (<View></View>);
+        switch (props.currState) {
             case bottomStates.itemSelection:
+                let numItem = props.items.length;
+                
+                const queryItemScreen = () => {
+                    dispatch({type: globalStates.searchQuery});
+                }
+
+                const storeSelectDialog = () => {
+                    dispatch({type: globalStates.finalListSelection, payload: {updatedItems: []}});
+                    // dispatch({type: globalStates.optionsDialog});
+                }
+
                 result = (
                     <View style={styles.bottom}>
                         <FAB 
                         icon="plus"
-                        onPress={()=>{}}
+                        onPress={queryItemScreen}
                         style={styles.centerButton}
                         />
                         <View style={styles.bar}>
                             <Text style={styles.bottomText}>
-                                13 Items
+                                {numItem} Items
                             </Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={storeSelectDialog}>
                                 <Text style={styles.nextText}>
                                     Next >
                                 </Text>
@@ -46,6 +49,8 @@ export class BottomNav extends Component {
                 );
                 break;
             case bottomStates.total:
+                const totalPrice = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
+
                 result = (
                     <View style={styles.bottom}>
                         <View style={styles.bar}>
@@ -53,7 +58,7 @@ export class BottomNav extends Component {
                                 TOTAL
                             </Text>
                             <Text style={styles.bottomText}>
-                                $31.56
+                                ${totalPrice}
                             </Text>
                         </View>
                     </View>
@@ -61,10 +66,7 @@ export class BottomNav extends Component {
                 break;
         }
 
-        return (
-            result
-         );
-    }
+        return result;
 }
 
 const styles = StyleSheet.create({
@@ -102,3 +104,12 @@ const styles = StyleSheet.create({
         color: '#00E676'
     }
 });
+
+const mapStateToProps = (state: State) => {
+    return {
+        currState: state.bottomState,
+        items: state.store.items
+    }
+}
+
+export default connect(mapStateToProps)(BottomNav);
