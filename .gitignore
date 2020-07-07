@@ -1,1 +1,4 @@
 .vscode/
+frontend/node_modules/
+frontend/web-build/
+frontend/.expo/
