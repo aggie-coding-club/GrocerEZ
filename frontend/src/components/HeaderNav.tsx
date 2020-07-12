@@ -4,35 +4,28 @@ import { Appbar, Searchbar } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import StoreSelector from './StoreSelectorButton';
 // import {  } from './SuggestionList';
-import { headerStates, globalStates } from '../constants/States';
+import { HeaderStates, GlobalStates } from '../constants/States';
 import { State } from '../constants/Interfaces';
-import { actionTypes } from '../constants/ActionTypes';
+import { ActionTypes } from '../constants/ActionTypes';
 
 interface Props {
-    currState: headerStates
+    currState: HeaderStates
 }
 
 function HeaderNav(props: Props) {
+    const dispatch = useDispatch();
     let [clearQuery, setClearQuery] = useState(() => false);
     let [query, setQuery] = useState(() => "");
-
-    const dispatch = useDispatch();
     
-    useEffect(() => {
-        function backButtonPressed() {
-            dispatch({type: globalStates.listSelection});
-            return true;
-        }
-
-        BackHandler.addEventListener('hardwareBackPress', backButtonPressed);
-
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', backButtonPressed);
-        }
-    })
+    // Used to tell whether or not back button eventlistening has been added on Android devices
+    let [hasBackEvent, setHasBackEvent] = useState(() => false);
+    function backButtonPressed() {
+        dispatch({type: GlobalStates.listSelection});
+        return true;
+    }
     
     const backToItemList = () => {
-        dispatch({type: globalStates.listSelection});
+        dispatch({type: GlobalStates.listSelection});
     }
 
     let result = (
@@ -41,7 +34,7 @@ function HeaderNav(props: Props) {
         </Appbar.Header>
     );
     switch (props.currState) {
-        case headerStates.storeSelect:
+        case HeaderStates.storeSelect:
             result = (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
@@ -50,14 +43,21 @@ function HeaderNav(props: Props) {
                 </Appbar.Header>
             );
             break;
-        case headerStates.search:
+        case HeaderStates.search:
+            // Implemented for convenient back button functionality for Android devices
+            if (!hasBackEvent) {
+                BackHandler.addEventListener('hardwareBackPress', backButtonPressed);
+                setHasBackEvent(true);
+            }
+
             const updateQuery = (changedQuery: string) => {
                 setQuery(changedQuery);
             }
         
             const submitQuery = () => {
                 setClearQuery(true);
-                dispatch({type: actionTypes.queryItem, payload: {searchQuery: query}});
+                // console.log(query);
+                dispatch({type: ActionTypes.queryItem, searchQuery: query});
             }
         
             result = (
@@ -75,9 +75,14 @@ function HeaderNav(props: Props) {
             );
             break;
         default:
+            // clear state from search
             if (clearQuery) {
                 setQuery("");
                 setClearQuery(false);
+            }
+            if (hasBackEvent) {
+                BackHandler.removeEventListener('hardwareBackPress', backButtonPressed);
+                setHasBackEvent(false);
             }
             break;
     }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {bottomStates, globalStates} from '../constants/States';
+import {BottomStates, GlobalStates} from '../constants/States';
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
 
 interface Props {
-    currState: bottomStates
+    currState: BottomStates
     items: Item[]
 }
 
@@ -16,16 +16,16 @@ function BottomNav(props: Props) {
 
         let result= (<View></View>);
         switch (props.currState) {
-            case bottomStates.itemSelection:
+            case BottomStates.itemSelection:
                 let numItem = props.items.length;
                 
                 const queryItemScreen = () => {
-                    dispatch({type: globalStates.searchQuery});
+                    dispatch({type: GlobalStates.searchQuery});
                 }
 
                 const storeSelectDialog = () => {
-                    dispatch({type: globalStates.finalListSelection, payload: {updatedItems: []}});
-                    // dispatch({type: globalStates.optionsDialog});
+                    dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                    // dispatch({type: GlobalStates.optionsDialog});
                 }
 
                 result = (
@@ -48,7 +48,7 @@ function BottomNav(props: Props) {
                     </View>
                 );
                 break;
-            case bottomStates.total:
+            case BottomStates.total:
                 const totalPrice = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
 
                 result = (

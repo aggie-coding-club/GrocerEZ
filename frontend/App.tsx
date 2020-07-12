@@ -4,9 +4,11 @@ import { StyleSheet, Text, View, SafeAreaView, StatusBar, Platform } from 'react
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import setState from './src/reducers/Reducer';
+import rootReducer from './src/reducers/Reducer';
 import HeaderNav from './src/components/HeaderNav';
 import BottomNav from './src/components/BottomNav';
+import { HeaderStates, BottomStates, PageStates } from "./src/constants/States";
+import { State } from "./src/constants/Interfaces";
 
 const theme = {
   ...DefaultTheme,
@@ -18,7 +20,7 @@ const theme = {
   },
 };
 
-const store = createStore(setState);
+const store = createStore(rootReducer);
 
 export default function App() {
   return (

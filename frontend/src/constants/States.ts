@@ -1,16 +1,16 @@
-export enum headerStates {
+export enum HeaderStates {
     title,
     search,
     storeSelect
 }
 
-export enum bottomStates {
+export enum BottomStates {
     none,
     itemSelection,
     total
 }
 
-export enum pageStates {
+export enum PageStates {
     none,
     itemList,
     itemListDialogue,
@@ -20,7 +20,7 @@ export enum pageStates {
     loading
 }
 
-export enum globalStates {
+export enum GlobalStates {
     listSelection,
     searchQuery,
     searchFilter,

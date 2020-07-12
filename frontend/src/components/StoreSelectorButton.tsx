@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Svg, { Path } from 'react-native-svg';
 import { useDispatch, connect } from 'react-redux';
-import { actionTypes } from '../constants/ActionTypes';
+import { ActionTypes } from '../constants/ActionTypes';
 import { State } from '../constants/Interfaces';
 
 interface Props {
@@ -24,7 +24,7 @@ function StoreSelector(props: Props) {
     const dispatch = useDispatch();
 
     const toggleStoreOpt = () => {
-        dispatch({type: actionTypes.changeStoreOpt, payload: {isSingleStore: !props.singleStoreActive}});
+        dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: !props.singleStoreActive});
     }
 
     return (

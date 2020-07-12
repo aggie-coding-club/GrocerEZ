@@ -1,4 +1,4 @@
-export enum actionTypes {
+export enum ActionTypes {
     queryItem = "queryItem",
     addItem = "addItem",
     removeItem = "removeItem",

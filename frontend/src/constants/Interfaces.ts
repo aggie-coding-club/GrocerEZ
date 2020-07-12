@@ -1,5 +1,5 @@
-import { headerStates, bottomStates, pageStates, globalStates } from './States';
-import { actionTypes } from './ActionTypes';
+import { HeaderStates, BottomStates, PageStates, GlobalStates } from './States';
+import { ActionTypes } from './ActionTypes';
 
 export interface Item {
     id: number,
@@ -16,33 +16,39 @@ export interface Store {
 }
 
 export interface State {
-    headerState: headerStates,
-    bottomState: bottomStates,
-    pageState: pageStates,
+    headerState: HeaderStates,
+    bottomState: BottomStates,
+    pageState: PageStates,
     store: Store
 }
 
-export interface searchPayload {
+export interface searchAction {
+    type: ActionTypes,
     searchQuery: string
 }
 
-export interface addItemPayload {
+export interface addItemAction {
+    type: ActionTypes,
     addedItem: Item
 }
 
-export interface removeItemPayload {
+export interface removeItemAction {
+    type: ActionTypes,
     removeItem: number // ID of item
 }
 
-export interface updateItemsPayload {
+export interface updateItemsAction {
+    type: GlobalStates,
     updatedItems: Item[]
 }
 
-export interface switchStorePayload {
+export interface switchStoreAction {
+    type: ActionTypes,
     isSingleStore: boolean
 }
 
-export interface Action {
-    type: globalStates | actionTypes,
-    payload: searchPayload | addItemPayload | removeItemPayload | updateItemsPayload | switchStorePayload
+export interface stateAction {
+    type: GlobalStates
 }
+
+export type Action = stateAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;
