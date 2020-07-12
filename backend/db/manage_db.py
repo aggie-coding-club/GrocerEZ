@@ -15,14 +15,26 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # read in password from config file
-pw_config = open(path.join(path.dirname(__file__), 'db_password'), 'r')
-dev_pw = pw_config.readline().strip()
-prod_pw = pw_config.readline().strip()
-pw_config.close()
+try:
+  pw_config = open(path.join(path.dirname(__file__), 'db_password'), 'r')
+  dev_pw = pw_config.readline().strip()
+  prod_pw = pw_config.readline().strip()
+  pw_config.close()
+except FileNotFoundError:
+  pw_config = open(path.join(path.dirname(__file__), 'db_password'), 'w')
+  pw_config.write('<dev password>\n<production password>s')
+  print('Created db_password file, please fill it in appropriately')
+  exit(1)
 
-un_config = open(path.join(path.dirname(__file__), 'db_username'), 'r')
-dev_un = un_config.readline().strip()
-prod_un = un_config.readline().strip()
+try:
+  un_config = open(path.join(path.dirname(__file__), 'db_username'), 'r')
+  dev_un = un_config.readline().strip()
+  prod_un = un_config.readline().strip()
+except FileNotFoundError:
+  un_config = open(path.join(path.dirname(__file__), 'db_username'), 'w')
+  un_config.write('<dev username>\n<production username>')
+  print('Created db_username file, please fill it in appropriately')
+  exit(1)
 
 # build appropriate db_string
 db_string = ''
