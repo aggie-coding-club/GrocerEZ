@@ -11,12 +11,25 @@ import sys
 class WalmartScraper:
     zipSet = False
     def __init__(self):
-        chrome_options = Options()
-        chrome_options.add_argument('--headless')
-        try:
-            self.driver = webdriver.Firefox(executable_path=r'.\geckodriver.exe')
-        except:
-            sys.exit("Web Driver is missing")
+        if len(sys.argv) != 2:
+            raise ValueError('Please enter a browser driver to use (Chrome or Firefox)')
+
+        browser = sys.argv[1]
+        if browser.lower() == 'chrome':
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')
+            try:
+                driver = r'./chromedriver.exe'
+                self.driver = webdriver.Chrome(driver, options=chrome_options)
+            except:
+                sys.exit('Chrome web driver is missing')
+        elif browser.lower() == 'firefox':
+            try:
+                self.driver = webdriver.Firefox(executable_path=r'.\geckodriver.exe')
+            except:
+                sys.exit("Web Driver is missing")
+        else:
+            sys.exit('Choose either chrome or firefox for browser.')
 
     def get_product(self, product_name, zip_code):
         self.driver.get('https://www.walmart.com/search/?query=' + product_name)
@@ -49,7 +62,7 @@ class WalmartScraper:
 
         # Product Title
         try:
-            product_title = soup.find(class_='prod-ProductTitle font-normal').get_text()
+            product_title = soup.find(class_='prod-ProductTitle prod-productTitle-buyBox font-bold').get_text()
         except:
             product_title = 'N/A'
             print('    ERROR PRODUCT TITLE NOT FOUND: ' + url)
@@ -76,10 +89,10 @@ class WalmartScraper:
         # Return dictionary of product information
         information = {
             'product_title': product_title,
-            'product_identifier': 'requests-version',
+            #'product_identifier': 'requests-version',
             'price': price,
             'ratings': rating,
-            'stock_status': 'requests-version'
+            #'stock_status': 'requests-version'
         }
         return information
 
@@ -89,12 +102,13 @@ class WalmartScraper:
         except:
             print('Driver does not exist')
 
-scraper = WalmartScraper()
-apples = scraper.get_product('apples', '77840')
-for item in apples:
-    print("Item Name: " + item['product_title'])
-    print("Product ID: " + item['product_identifier'])
-    print("Price: " + item['price'])
-    print("Rating: " + item['ratings'])
-    print("Stock Status: " + item['stock_status'])
-    print()
+if __name__ == "__main__":
+    scraper = WalmartScraper()
+    apples = scraper.get_product('apples', '77840')
+    for item in apples:
+        print("Item Name: " + item['product_title'])
+        #print("Product ID: " + item['product_identifier'])
+        print("Price: " + item['price'])
+        print("Rating: " + item['ratings'])
+        #print("Stock Status: " + item['stock_status'])
+        print()
