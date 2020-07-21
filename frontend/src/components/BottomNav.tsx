@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import {BottomStates, GlobalStates} from '../constants/States';
 import { FAB } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
+import { ActionTypes } from '../constants/ActionTypes';
 
 interface Props {
     currState: BottomStates
@@ -24,8 +25,29 @@ function BottomNav(props: Props) {
                 }
 
                 const storeSelectDialog = () => {
-                    dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
-                    // dispatch({type: GlobalStates.optionsDialog});
+                    Alert.alert("Route Selection", 
+                    "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
+                    [
+                        {
+                            text: "One Stop",
+                            style: "default",
+                            onPress: () => {
+                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
+                                // will be changed to loading screen later
+                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                            }
+                        },
+                        {
+                            text: "Multi Store",
+                            style: "default",
+                            onPress: () => {
+                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
+                                // will be changed to loading screen later
+                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                            }
+                        }
+                    ]
+                    )
                 }
 
                 result = (
@@ -41,7 +63,7 @@ function BottomNav(props: Props) {
                             </Text>
                             <TouchableOpacity onPress={storeSelectDialog}>
                                 <Text style={styles.nextText}>
-                                    Next >
+                                    Next &gt;
                                 </Text>
                             </TouchableOpacity>
                         </View>

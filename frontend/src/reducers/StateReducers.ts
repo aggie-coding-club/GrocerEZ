@@ -35,13 +35,6 @@ export default function setState(state: State, action: Action) {
                 bottomState: BottomStates.none,
                 pageState: PageStates.searchResults
             }
-        case GlobalStates.optionsDialog:
-            return {
-                ...state,
-                headerState: HeaderStates.title,
-                bottomState: BottomStates.itemSelection,
-                pageState: PageStates.itemListDialogue
-            }
         case GlobalStates.loadingScreen:
             return {
                 ...state,
