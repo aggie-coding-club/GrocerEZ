@@ -1,2 +1,3 @@
 __pycache__/*
-
+scraper/*.log
+scraper/*.exe
