@@ -3,9 +3,6 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import requests
 
-# Global variable
-s = requests.Session()
-
 # HEB Scraper Class
 class HEBScraper():
     def __init__(self):
@@ -14,8 +11,10 @@ class HEBScraper():
         # Get cookies for request session
         cookies = browser.get_cookies()
         browser.quit()
+        # Creating a session
+        self.s = requests.Session()
         # PLace cookies in the session cookie jar
-        [s.cookies.set(cookie['name'], cookie['value']) for cookie in cookies]
+        [self.s.cookies.set(cookie['name'], cookie['value']) for cookie in cookies]
 
     def getProduct(self, product):
         # Get the links of all items of this type (Page 1 - 60 items)
@@ -30,7 +29,7 @@ class HEBScraper():
         # Link to the given bs4, first page (60 items)
         url = "https://www.heb.com/search/?q=" + link_name
 
-        page = s.get(url)
+        page = self.s.get(url)
         # Check if the page was opened successfully (<Response [200]>)
         print(page)
 
@@ -41,7 +40,7 @@ class HEBScraper():
 
     def parseLink(self, url):
         # Open url-link
-        page = s.get(url)
+        page = self.s.get(url)
         soup = BeautifulSoup(page.text, 'html.parser')
 
         # Find values of each attribute
