@@ -22,7 +22,7 @@ try:
   pw_config.close()
 except FileNotFoundError:
   pw_config = open(path.join(path.dirname(__file__), 'db_password'), 'w')
-  pw_config.write('<dev password>\n<production password>s')
+  pw_config.write('<dev password>\n<production password>')
   print('Created db_password file, please fill it in appropriately')
   exit(1)
 
