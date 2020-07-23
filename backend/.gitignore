@@ -4,3 +4,4 @@ db/db_password
 db/db_username
 scraper/*.log
 scraper/*.exe
+*.pyc
