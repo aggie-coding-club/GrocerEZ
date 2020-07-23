@@ -1,0 +1,20 @@
+1593050645882	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\rynbh\\AppData\\Local\\Temp\\rust_mozprofileKXiuxK"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1593050648248	Marionette	INFO	Listening on port 64958
+1593050648498	Marionette	WARN	TLS certificate errors will be ignored for this session
+1593050688502	Marionette	INFO	Stopped listening on port 64958
+[Child 20224, Chrome_ChildThread] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 522
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1593050717828	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\rynbh\\AppData\\Local\\Temp\\rust_mozprofile5PXNYl"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1593050720212	Marionette	INFO	Listening on port 65088
+1593050720439	Marionette	WARN	TLS certificate errors will be ignored for this session
+1593050754805	Marionette	INFO	Stopped listening on port 65088
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
