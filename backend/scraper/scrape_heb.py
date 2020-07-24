@@ -12,9 +12,9 @@ class HEBScraper():
         cookies = browser.get_cookies()
         browser.quit()
         # Creating a session
-        self.s = requests.Session()
+        self.session = requests.Session()
         # PLace cookies in the session cookie jar
-        [self.s.cookies.set(cookie['name'], cookie['value']) for cookie in cookies]
+        [self.session.cookies.set(cookie['name'], cookie['value']) for cookie in cookies]
 
     def getProduct(self, product):
         # Get the links of all items of this type (Page 1 - 60 items)
@@ -29,7 +29,7 @@ class HEBScraper():
         # Link to the given bs4, first page (60 items)
         url = "https://www.heb.com/search/?q=" + link_name
 
-        page = self.s.get(url)
+        page = self.session.get(url)
         # Check if the page was opened successfully (<Response [200]>)
         print(page)
 
@@ -40,7 +40,7 @@ class HEBScraper():
 
     def parseLink(self, url):
         # Open url-link
-        page = self.s.get(url)
+        page = self.session.get(url)
         soup = BeautifulSoup(page.text, 'html.parser')
 
         # Find values of each attribute
