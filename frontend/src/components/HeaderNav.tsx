@@ -3,7 +3,6 @@ import { StyleSheet, View, BackHandler } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import StoreSelector from './StoreSelectorButton';
-// import {  } from './SuggestionList';
 import { HeaderStates, GlobalStates } from '../constants/States';
 import { State } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';

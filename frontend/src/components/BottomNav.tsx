@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
 import { ActionTypes } from '../constants/ActionTypes';
+import temporaryDB from '../../temporaryDB.json';
 
 interface Props {
     currState: BottomStates
@@ -34,7 +35,7 @@ function BottomNav(props: Props) {
                             onPress: () => {
                                 dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
                                 // will be changed to loading screen later
-                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                                dispatch({type: GlobalStates.finalListSelection, updatedItems: temporaryDB['testItems']});
                             }
                         },
                         {
@@ -71,7 +72,8 @@ function BottomNav(props: Props) {
                 );
                 break;
             case BottomStates.total:
-                const totalPrice = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
+                let price = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
+                let totalPrice = (price / 100).toFixed(2)
 
                 result = (
                     <View style={styles.bottom}>
@@ -93,9 +95,12 @@ function BottomNav(props: Props) {
 
 const styles = StyleSheet.create({
     bottom: {
-        flex: 1,
+        display: "flex",
         justifyContent: 'flex-end',
         width: "100%",
+        position: "absolute",
+        zIndex: 10,
+        bottom: 0
     },
     centerButton: {
         position: 'absolute',

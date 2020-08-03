@@ -9,6 +9,7 @@ import HeaderNav from './src/components/HeaderNav';
 import BottomNav from './src/components/BottomNav';
 import { HeaderStates, BottomStates, PageStates } from "./src/constants/States";
 import { State } from "./src/constants/Interfaces";
+import Page from './src/components/Page';
 
 const theme = {
   ...DefaultTheme,
@@ -28,6 +29,7 @@ export default function App() {
       <PaperProvider theme={theme}>
           <SafeAreaView style={styles.container}>
             <HeaderNav/>
+            <Page/>
             <BottomNav/>
           </SafeAreaView>
       </PaperProvider>
@@ -37,7 +39,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
     backgroundColor: '#FAFAFA',
+    position: "relative",
+    height: "100%"
   },
 });

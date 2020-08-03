@@ -2,6 +2,7 @@ import setActions from './StateReducers';
 import setState from './ActionReducers';
 import { State, Action } from '../constants/Interfaces';
 import { HeaderStates, BottomStates, PageStates } from "../constants/States";
+import temporaryDB from '../../temporaryDB.json';
 
 const initialState: State = {
     headerState: HeaderStates.title,
@@ -9,7 +10,7 @@ const initialState: State = {
     pageState: PageStates.itemList,
     store: {
         searchQuery: '',
-        items: []
+        items: temporaryDB['testItems']
     }
 };
 

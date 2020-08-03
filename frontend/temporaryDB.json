@@ -1,0 +1,67 @@
+{
+    "testItems": [
+        {
+            "id": 1,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 2,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 3,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 4,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 5,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 6,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3", "type1", "type2", "type3", "type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 7,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 8,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        },
+        {
+            "id": 9,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB"
+        }
+    ]
+}

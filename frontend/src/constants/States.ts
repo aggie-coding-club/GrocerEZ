@@ -13,7 +13,6 @@ export enum BottomStates {
 export enum PageStates {
     none,
     itemList,
-    itemListDialogue,
     itemListPrices,
     searchResults,
     searchFilters,
@@ -25,7 +24,6 @@ export enum GlobalStates {
     searchQuery,
     searchFilter,
     searchResults,
-    optionsDialog,
     loadingScreen,
     finalListSelection
 }
