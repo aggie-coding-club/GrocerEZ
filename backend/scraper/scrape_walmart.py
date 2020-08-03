@@ -1,83 +1,88 @@
+from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
-import psycopg2
 
-con = psycopg2.connect("dbname='ddjr78vh1cvcc4' user='xpcdulaqqancpa' host='ec2-34-200-72-77.compute-1.amazonaws.com' password='0616d8130a659a869dacb11768aaf0d8f87f741b19fc8bf46d3af34c78f5ca85'")
-cur = con.cursor()
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+import time
 
-def parseLink(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.text, 'html.parser')
+ZIPCODE = '77802'
 
-    product_title = soup.find(class_='prod-ProductTitle font-normal').get_text()
+driver_path = r'A:/chrome driver/chromedriver.exe'
 
-    rating = soup.find(class_='ReviewsHeader-ratingPrefix font-bold')
-    if(rating != None):
-        rating = rating.text
-    else:
-        rating = "N/A"
+class WalmartScraper:
+    zipSet = False
+    def __init__(self):
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        self.driver = webdriver.Chrome(driver_path, options=chrome_options)
 
-    dollars = soup.find('span', {'class': 'price-characteristic'})
-    if(dollars != None):
-        dollars = dollars.text
-    else:
-        dollars = "0"
-    
-    cents = soup.find('span', {'class': 'price-mantissa'})
-    if(cents != None):
-        cents = cents.text
-    else:
-        cents = "0"
+    def getProduct(self, productName):
+        self.driver.get('https://www.walmart.com/search/?query=' + productName)
+        URLS = self.getProductUrls(productName)
 
-    price = float(dollars + '.' + cents)
+        productInformation = [] #List of dictionaries, containing product information
 
-    #Return dictionary of product information
-    product_details = { 'product-title' : product_title, 'price' : str(price), 'rating' : rating}
-    return product_details
+        session = requests.Session()
+        session.put('https://www.walmart.com/account/api/location',
+                    data={'postalCode': ZIPCODE, 'clientName': 'Web-Header-NDToggleBar', 'persistLocation': 'true'})
 
-def getProducts(query):
-    url = "http://www.walmart.com/search/?query=" + query
-    page = requests.get(url)
-    soup = BeautifulSoup(page.text, 'html.parser')
-    products = []
-    #Find links for each search result, and parse
-    for links in soup.find_all("a", class_='search-result-productimage gridview display-block'):
-        products.append(parseLink("https://walmart.com" + links.get('href')))
-    #Return list of dictionaries
-    return products
+        for url in URLS:
+            productInformation.append(self.parseProductLink(url,session))
 
-    
-# Execution of Main Program
-query = "broccoli"
-products = getProducts(query)
-#print('\n', products, '\n')
-print(len(products))
-count = 0
+        return productInformation
 
+    def getProductUrls(self, queryString):
+        self.driver.get('https://www.walmart.com/search/?query=' + queryString)
+        URLS = []
+        for link in self.driver.find_element_by_class_name('search-product-result').find_elements_by_tag_name('a'):
+            if (link.get_attribute('class') == 'search-result-productimage gridview display-block'):
+                URLS.append(link.get_attribute('href'))
+        return URLS
 
-cur.execute("delete from \"Item\"")
-con.commit()
+    #Requests + selenium combo?
+    def parseProductLink(self, url, session):
+        print('Opening url: ' + url) #debugging
+        page = session.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(page.text, 'lxml')
+        try:
+            product_title = soup.find(class_='prod-ProductTitle font-normal').get_text()
+        except:
+            product_title = 'ERROR: ' + url
+        try:
+            rating = soup.find(class_='ReviewsHeader-ratingPrefix font-bold').get_text()
+        except:
+            rating = 'ERROR: ' + url
+        dollar = soup.select_one(
+            '#price > div > span.hide-content.display-inline-block-m > span > span.price-group > span.price-characteristic')
+        cent = soup.select_one(
+            '#price > div > span.hide-content.display-inline-block-m > span > span.price-group > span.price-mantissa')
 
+        if (dollar != None and cent != None):
+            price = dollar.text + '.' + cent.text
+        else:
+            price = 'ERROR: ' + url
 
-for item in products:
-    try:
-        #variables
-        name = item['product-title']
-        store = "Walmart"
-        pricee = float(item['price'])
-        ppu = 0.00
-        #end Variables
+        # Return dictionary of product information
+        information = {
+            'product_title': product_title,
+            'product_identifier': 'requests-version',
+            'price': price,
+            'ratings': rating,
+            'stock_status': 'requests-version'
+        }
+        return information
 
-        cur.execute('INSERT INTO "Item" (name, price, priceperunit, store) VALUES(%s, %s, %s, %s)', [name, pricee, ppu, store])
-        con.commit()
+    def destructor(self):
+        self.driver.close()
 
-        #print("Item Name: " + name)
-        #print("Price: " + pricee)
-        #print("Rating: " + item['rating'])
-        #print("")
-        count += 1
-    except Exception as e:
-        print(e)
-        continue
-
-print(count)
+scraper = WalmartScraper()
+apples = scraper.getProduct('apples')
+scraper.destructor()
+for item in apples:
+    print("Item Name: " + item['product_title'])
+    print("Product ID: " + item['product_identifier'])
+    print("Price: " + item['price'])
+    print("Rating: " + item['ratings'])
+    print("Stock Status: " + item['stock_status'])
+    print()
