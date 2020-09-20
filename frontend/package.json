@@ -9,16 +9,26 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@types/react-native-material-ui": "^1.32.0",
+    "@types/react-redux": "^7.1.9",
     "expo": "~37.0.3",
     "expo-updates": "~0.1.0",
+    "prop-types": "^15.7.2",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
-    "react-native": "^0.62.1",
-    "react-native-gesture-handler": "~1.6.0",
-    "react-native-reanimated": "~1.7.0",
-    "react-native-screens": "~2.2.0",
+    "react-native": "^0.61.0",
+    "react-native-elements": "^2.0.0",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-paper": "^3.10.1",
+    "react-native-reanimated": "^1.7.1",
+    "react-native-safe-area-context": "^1.0.2",
+    "react-native-screens": "^2.2.0",
+    "react-native-svg": "^12.1.0",
     "react-native-unimodules": "~0.9.0",
-    "react-native-web": "~0.11.7"
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-web": "~0.11.7",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "~7.8.6",
