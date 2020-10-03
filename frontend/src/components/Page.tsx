@@ -4,6 +4,7 @@ import { PageStates } from "../constants/States";
 import { connect } from "react-redux";
 import ItemList from "./Pages/ItemList";
 import { View, StyleSheet, ScrollView } from 'react-native';
+import SuggestionList from './Pages/SuggestionList';
 
 interface Props {
     currState: PageStates,
@@ -11,7 +12,13 @@ interface Props {
 }
 
 function Page(props: Props) {
-    let result = <ItemList items={props.items} currState={props.currState}/>;
+    let result;
+    if (props.currState == PageStates.itemList || props.currState == PageStates.itemListPrices) {
+        result = <ItemList items={props.items} currState={props.currState}/>
+    }
+    else if (props.currState == PageStates.suggestionList) {
+        result = <SuggestionList/>
+    }
     return (
         <ScrollView style={styles.fullPage}>
             {result}
@@ -21,7 +28,6 @@ function Page(props: Props) {
 
 const styles = StyleSheet.create({
     fullPage: {
-        // backgroundColor: "grey",
         flexGrow: 1,
 
     }

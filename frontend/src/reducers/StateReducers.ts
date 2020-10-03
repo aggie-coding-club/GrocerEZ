@@ -19,7 +19,7 @@ export default function setState(state: State, action: Action) {
                 ...state,
                 headerState: HeaderStates.search,
                 bottomState: BottomStates.none,
-                pageState: PageStates.none,
+                pageState: PageStates.suggestionList,
             }
         case GlobalStates.searchFilter:
             return {

@@ -14,6 +14,7 @@ export enum PageStates {
     none,
     itemList,
     itemListPrices,
+    suggestionList,
     searchResults,
     searchFilters,
     loading

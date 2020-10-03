@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';

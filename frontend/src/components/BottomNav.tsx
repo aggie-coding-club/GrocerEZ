@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import {BottomStates, GlobalStates} from '../constants/States';
 import { FAB } from 'react-native-paper';
@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
 import { ActionTypes } from '../constants/ActionTypes';
-import temporaryDB from '../../temporaryDB.json';
+import { findItemsWithRoute } from './Helper/AsyncCalls';
 
 interface Props {
     currState: BottomStates
@@ -34,8 +34,8 @@ function BottomNav(props: Props) {
                             style: "default",
                             onPress: () => {
                                 dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
-                                // will be changed to loading screen later
-                                dispatch({type: GlobalStates.finalListSelection, updatedItems: temporaryDB['testItems']});
+                                dispatch({type: GlobalStates.loadingScreen})
+                                findItemsWithRoute(dispatch, props.items);
                             }
                         },
                         {
@@ -43,8 +43,8 @@ function BottomNav(props: Props) {
                             style: "default",
                             onPress: () => {
                                 dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
-                                // will be changed to loading screen later
-                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                                dispatch({type: GlobalStates.loadingScreen})
+                                findItemsWithRoute(dispatch, props.items);
                             }
                         }
                     ]

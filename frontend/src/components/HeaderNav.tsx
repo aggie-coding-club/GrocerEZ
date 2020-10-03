@@ -6,6 +6,7 @@ import StoreSelector from './StoreSelectorButton';
 import { HeaderStates, GlobalStates } from '../constants/States';
 import { State } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';
+import { querySuggestions } from './Helper/AsyncCalls';
 
 interface Props {
     currState: HeaderStates
@@ -51,6 +52,7 @@ function HeaderNav(props: Props) {
 
             const updateQuery = (changedQuery: string) => {
                 setQuery(changedQuery);
+                querySuggestions(dispatch, query);
             }
         
             const submitQuery = () => {

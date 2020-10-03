@@ -4,6 +4,7 @@ import { ActionTypes } from './ActionTypes';
 export interface Item {
     id: number,
     name: string,
+    pic: string, // url to pic
     tags: string[],
     price?: number, // this should be in cents
     store?: string
@@ -12,6 +13,7 @@ export interface Item {
 export interface Store {
     isSingleStore?: boolean,
     searchQuery?: string,
+    suggestions: string[],
     items: Item[]
 }
 
@@ -20,6 +22,11 @@ export interface State {
     bottomState: BottomStates,
     pageState: PageStates,
     store: Store
+}
+
+export interface suggestionAction {
+    type: ActionTypes,
+    suggestions: string[]
 }
 
 export interface searchAction {
@@ -51,4 +58,4 @@ export interface stateAction {
     type: GlobalStates
 }
 
-export type Action = stateAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;
+export type Action = stateAction | suggestionAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;

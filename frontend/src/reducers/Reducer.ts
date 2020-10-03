@@ -9,8 +9,9 @@ const initialState: State = {
     bottomState: BottomStates.itemSelection,
     pageState: PageStates.itemList,
     store: {
-        searchQuery: '',
-        items: temporaryDB['testItems']
+        searchQuery: "",
+        suggestions: temporaryDB['suggestions'], // should be empty at start
+        items: temporaryDB['testItems'] // should be empty at start
     }
 };
 

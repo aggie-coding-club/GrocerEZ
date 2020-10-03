@@ -1,12 +1,15 @@
 import React from 'react';
 import { Item } from '../constants/Interfaces';
 import { View, Text, StyleSheet } from 'react-native';
-import { black } from 'react-native-paper/lib/typescript/src/styles/colors';
+import { Svg, Defs, ClipPath, Circle, Image } from 'react-native-svg';
 
 
 interface Props {
     item: Item
 }
+
+let picHeight = 60;
+let picWidth = 60;
 
 export function ItemTag(props: Props) {
     let tags = [];
@@ -20,11 +23,18 @@ export function ItemTag(props: Props) {
         }
         tags.push(tempComp);
     }
-    
+
     return (
         <View style={styles.item}>
             <View style={styles.itemPicContainer}>
-                <View style={styles.itemPic}></View>
+                <Svg width={picWidth} height={picHeight}>
+                    <Defs>
+                        <ClipPath id="clipPath">
+                            <Circle r={picHeight/2} cx={picWidth/2} cy={picHeight/2}/>
+                        </ClipPath>
+                    </Defs>
+                    <Image width={picWidth} height={picHeight} preserveAspectRatio="xMidYMid slice" href={{uri: props.item.pic}} clipPath="#clipPath"/>
+                </Svg>
             </View>
             <View style={styles.itemInfo}>
                 <Text style={styles.itemName}>
@@ -42,7 +52,14 @@ export function ItemPrice(props: Props) {
     return (
         <View style={styles.item}>
             <View style={styles.itemPicContainer}>
-                <View style={styles.itemPic}></View>
+                <Svg width={picWidth} height={picHeight}>
+                    <Defs>
+                        <ClipPath id="clipPath">
+                            <Circle r={picHeight/2} cx={picWidth/2} cy={picHeight/2}/>
+                        </ClipPath>
+                    </Defs>
+                    <Image width={picWidth} height={picHeight} preserveAspectRatio="xMidYMid slice" href={{uri: props.item.pic}} clipPath="#clipPath"/>
+                </Svg>
             </View>
             <View style={styles.itemInfo}>
                 <Text style={styles.itemName}>
@@ -71,13 +88,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 5,
         marginHorizontal: 10
-    },
-    itemPic: {
-        height: 60,
-        width: 60,
-        borderRadius: 50,
-        backgroundColor: "black",
-        overflow: "hidden"
     },
     itemInfo: {
         display: "flex",

@@ -5,11 +5,19 @@ import
     searchAction, 
     addItemAction, 
     removeItemAction,
-    switchStoreAction
+    switchStoreAction, suggestionAction
 } from "../constants/Interfaces";
 
 export default function setAction(state : State, action: Action) {
     switch (action.type) {  
+        case ActionTypes.putSuggestions:
+            return {
+                ...state,
+                store: {
+                    ...state.store,
+                    suggestions: (action as suggestionAction).suggestions
+                }
+            }
         case ActionTypes.queryItem:
             // add additional action to perform query against database
             return {
