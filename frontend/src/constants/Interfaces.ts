@@ -1,6 +1,7 @@
 import { HeaderStates, BottomStates, PageStates, GlobalStates } from './States';
 import { ActionTypes } from './ActionTypes';
 
+// TODO: update interface
 export interface Item {
     id: number,
     name: string,
@@ -58,4 +59,5 @@ export interface stateAction {
     type: GlobalStates
 }
 
+// abstract action to include all actions
 export type Action = stateAction | suggestionAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;

@@ -1,3 +1,4 @@
+// action types for action reducer
 export enum ActionTypes {
     putSuggestions = "putSuggestions",
     queryItem = "queryItem",

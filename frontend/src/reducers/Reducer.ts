@@ -10,18 +10,19 @@ const initialState: State = {
     pageState: PageStates.itemList,
     store: {
         searchQuery: "",
-        suggestions: temporaryDB['suggestions'], // should be empty at start
-        items: temporaryDB['testItems'] // should be empty at start
+        suggestions: temporaryDB['suggestions'], // FIXME: should be empty at start (currently testing)
+        items: temporaryDB['testItems'] // FIXME: should be empty at start (currently testing)
     }
 };
 
+// combining reducers for action and state
 export default function rootReducer(state: State = initialState, action: Action) {
     const reducersToUse = [setActions, setState];
 
     let newState = undefined;
     for (let i in reducersToUse) {
         newState = reducersToUse[i](state, action);
-        if (newState) {
+        if (newState) { // return state if the state and action are found in the reducersToUse
             return newState;
         }
     }

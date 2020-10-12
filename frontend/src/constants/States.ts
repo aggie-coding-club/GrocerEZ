@@ -1,3 +1,4 @@
+// state types for element state reducer
 export enum HeaderStates {
     title,
     search,

@@ -9,11 +9,13 @@ interface Props {
     searchQuery: string | undefined
 }
 
+// show search results from backend
 function SearchResultPage(props: Props) {
     let [results, setResults] = useState(() => []);
     let [loading, setLoading] = useState(() => true);
     let result; 
     if (loading) {
+        // TODO: create loading page
         // set result to loading
         if (props.searchQuery) {
             queryItemSearch(props.searchQuery, 0).then((response) => {

@@ -13,18 +13,21 @@ interface Props {
     items: Item[]
 }
 
+// bottom navigation of app
 function BottomNav(props: Props) {
         const dispatch = useDispatch();
 
         let result= (<View></View>);
         switch (props.currState) {
-            case BottomStates.itemSelection:
+            case BottomStates.itemSelection: // initial item selection
                 let numItem = props.items.length;
                 
+                // for transitioning to search page
                 const queryItemScreen = () => {
                     dispatch({type: GlobalStates.searchQuery});
                 }
 
+                // for transitioning to final results page
                 const storeSelectDialog = () => {
                     Alert.alert("Route Selection", 
                     "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
@@ -71,7 +74,8 @@ function BottomNav(props: Props) {
                     </View>
                 );
                 break;
-            case BottomStates.total:
+            case BottomStates.total: // final item selection page
+                // calculate price
                 let price = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
                 let totalPrice = (price / 100).toFixed(2)
 

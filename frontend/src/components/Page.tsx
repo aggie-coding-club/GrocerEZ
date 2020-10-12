@@ -3,7 +3,7 @@ import { State, Item } from "../constants/Interfaces";
 import { PageStates } from "../constants/States";
 import { connect } from "react-redux";
 import ItemList from "./Pages/ItemList";
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import SuggestionList from './Pages/SuggestionList';
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
     items: Item[]
 }
 
+// page (rest of the app area other than the header and bottom nav)
+// changes with the state of the page
 function Page(props: Props) {
     let result;
     if (props.currState == PageStates.itemList || props.currState == PageStates.itemListPrices) {

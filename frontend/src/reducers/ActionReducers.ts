@@ -8,6 +8,7 @@ import
     switchStoreAction, suggestionAction
 } from "../constants/Interfaces";
 
+// reducer for all actions
 export default function setAction(state : State, action: Action) {
     switch (action.type) {  
         case ActionTypes.putSuggestions:

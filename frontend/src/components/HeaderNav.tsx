@@ -12,6 +12,7 @@ interface Props {
     currState: HeaderStates
 }
 
+// header navigation for app
 function HeaderNav(props: Props) {
     const dispatch = useDispatch();
     let [clearQuery, setClearQuery] = useState(() => false);
@@ -28,13 +29,14 @@ function HeaderNav(props: Props) {
         dispatch({type: GlobalStates.listSelection});
     }
 
+    // default title header nav
     let result = (
         <Appbar.Header>
             <Appbar.Content title="GrocerEZ"/>
         </Appbar.Header>
     );
     switch (props.currState) {
-        case HeaderStates.storeSelect:
+        case HeaderStates.storeSelect: // for final item selection with route
             result = (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
@@ -43,7 +45,7 @@ function HeaderNav(props: Props) {
                 </Appbar.Header>
             );
             break;
-        case HeaderStates.search:
+        case HeaderStates.search: // for search page
             // Implemented for convenient back button functionality for Android devices
             if (!hasBackEvent) {
                 BackHandler.addEventListener('hardwareBackPress', backButtonPressed);

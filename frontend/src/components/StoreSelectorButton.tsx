@@ -10,6 +10,7 @@ interface Props {
     singleStoreActive: boolean
 }
 
+// store selector button used in the header nav
 function StoreSelector(props: Props) {
     let singleStoreStyle: Array<any> = [styles.button, styles.leftButton]
     let multiStoreStyle: Array<any> = [styles.button, styles.rightButton]

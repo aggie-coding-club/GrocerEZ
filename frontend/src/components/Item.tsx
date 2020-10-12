@@ -11,6 +11,7 @@ interface Props {
 let picHeight = 60;
 let picWidth = 60;
 
+// different ways to present the item
 export function ItemTag(props: Props) {
     let tags = [];
     let firstTag = true;

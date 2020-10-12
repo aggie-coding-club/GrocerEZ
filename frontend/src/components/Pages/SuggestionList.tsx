@@ -9,9 +9,11 @@ interface Props {
     suggestions: string[]
 }
 
+// create list of suggestions for searching
 function SuggestionList(props: Props) {
     const dispatch = useDispatch();
 
+    // dispatch new query once a suggestion is chosen
     const newQuery = (query: string) => {
         // console.log(query);
         dispatch({type: ActionTypes.queryItem, searchQuery: query});

@@ -5,6 +5,7 @@ import
     updateItemsAction
 } from '../constants/Interfaces';
 
+// reducer for all element states
 export default function setState(state: State, action: Action) {
     switch (action.type) {
         case GlobalStates.listSelection:
