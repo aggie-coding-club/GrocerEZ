@@ -20,7 +20,7 @@ function BottomNav(props: Props) {
         let result= (<View></View>);
         switch (props.currState) {
             case BottomStates.itemSelection: // initial item selection
-                let numItem = props.items.length;
+                let numItems = props.items.length;
                 
                 // for transitioning to search page
                 const queryItemScreen = () => {
