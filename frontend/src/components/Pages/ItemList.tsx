@@ -11,7 +11,7 @@ interface Props {
 
 // item list for items user selected
 export default function ItemList(props: Props) {
-    let ouputedItems = [];
+    let outputedItems = [];
 
     for (const item of props.items) {
         if (props.currState == PageStates.itemListPrices) // item display with price and store
