@@ -77,7 +77,7 @@ function BottomNav(props: Props) {
             case BottomStates.total: // final item selection page
                 // calculate price
                 let price = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
-                let totalPrice = (price / 100).toFixed(2)
+                const totalPrice = (price / 100).toFixed(2)
 
                 result = (
                     <View style={styles.bottom}>
