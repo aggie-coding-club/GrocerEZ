@@ -17,7 +17,6 @@ interface Props {
 function BottomNav(props: Props) {
         const dispatch = useDispatch();
 
-        let result= (<View></View>);
         switch (props.currState) {
             case BottomStates.itemSelection: // initial item selection
                 let numItems = props.items.length;
@@ -30,31 +29,38 @@ function BottomNav(props: Props) {
                 // for transitioning to final results page
                 const storeSelectDialog = () => {
                     Alert.alert("Route Selection", 
-                    "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
-                    [
-                        {
-                            text: "One Stop",
-                            style: "default",
-                            onPress: () => {
-                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
-                                dispatch({type: GlobalStates.loadingScreen})
-                                findItemsWithRoute(dispatch, props.items);
+                        "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
+                        [
+                            {
+                                text: "One Stop",
+                                style: "default",
+                                onPress: () => {
+                                    // set route to be single store
+                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
+                                    // call loading screen
+                                    dispatch({type: GlobalStates.loadingScreen})
+                                    // backend call to find items with cheapest total price given a single store
+                                    findItemsWithRoute(dispatch, props.items, true);
+                                }
+                            },
+                            {
+                                text: "Multi Store",
+                                style: "default",
+                                onPress: () => {
+                                    // set route to be multi store
+                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
+                                    // call loading screen
+                                    dispatch({type: GlobalStates.loadingScreen})
+                                    // backend call to find items with cheapest total price given multiple stores
+                                    findItemsWithRoute(dispatch, props.items, false);
+                                }
                             }
-                        },
-                        {
-                            text: "Multi Store",
-                            style: "default",
-                            onPress: () => {
-                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
-                                dispatch({type: GlobalStates.loadingScreen})
-                                findItemsWithRoute(dispatch, props.items);
-                            }
-                        }
-                    ]
-                    )
+                        ],
+                        {cancelable: true}
+                    );
                 }
 
-                result = (
+                return (
                     <View style={styles.bottom}>
                         <FAB 
                         icon="plus"
@@ -63,7 +69,7 @@ function BottomNav(props: Props) {
                         />
                         <View style={styles.bar}>
                             <Text style={styles.bottomText}>
-                                {numItem} Items
+                                {numItems} Items
                             </Text>
                             <TouchableOpacity onPress={storeSelectDialog}>
                                 <Text style={styles.nextText}>
@@ -73,13 +79,12 @@ function BottomNav(props: Props) {
                         </View>
                     </View>
                 );
-                break;
             case BottomStates.total: // final item selection page
                 // calculate price
-                let price = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
+                let price = props.items.reduce((total, {price}) => total + (price ? price : 0), 0);
                 const totalPrice = (price / 100).toFixed(2)
 
-                result = (
+                return (
                     <View style={styles.bottom}>
                         <View style={styles.bar}>
                             <Text style={styles.bottomText}>
@@ -91,10 +96,9 @@ function BottomNav(props: Props) {
                         </View>
                     </View>
                 );
-                break;
         }
 
-        return result;
+        return (<View></View>);
 }
 
 const styles = StyleSheet.create({

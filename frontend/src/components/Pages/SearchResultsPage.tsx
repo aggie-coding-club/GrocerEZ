@@ -11,8 +11,8 @@ interface Props {
 
 // show search results from backend
 function SearchResultPage(props: Props) {
-    let [results, setResults] = useState(() => []);
-    let [loading, setLoading] = useState(() => true);
+    let [results, setResults] = useState([]);
+    let [loading, setLoading] = useState(true);
     let result; 
     if (loading) {
         // TODO: create loading page

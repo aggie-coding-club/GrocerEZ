@@ -15,11 +15,11 @@ interface Props {
 // header navigation for app
 function HeaderNav(props: Props) {
     const dispatch = useDispatch();
-    let [clearQuery, setClearQuery] = useState(() => false);
-    let [query, setQuery] = useState(() => "");
+    let [clearQuery, setClearQuery] = useState(false);
+    let [query, setQuery] = useState("");
     
     // Used to tell whether or not back button eventlistening has been added on Android devices
-    let [hasBackEvent, setHasBackEvent] = useState(() => false);
+    let [hasBackEvent, setHasBackEvent] = useState(false);
     function backButtonPressed() {
         dispatch({type: GlobalStates.listSelection});
         return true;
@@ -29,22 +29,15 @@ function HeaderNav(props: Props) {
         dispatch({type: GlobalStates.listSelection});
     }
 
-    // default title header nav
-    let result = (
-        <Appbar.Header>
-            <Appbar.Content title="GrocerEZ"/>
-        </Appbar.Header>
-    );
     switch (props.currState) {
         case HeaderStates.storeSelect: // for final item selection with route
-            result = (
+            return (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
                     <Appbar.Content title="GrocerEZ" />
                     <StoreSelector/>
                 </Appbar.Header>
             );
-            break;
         case HeaderStates.search: // for search page
             // Implemented for convenient back button functionality for Android devices
             if (!hasBackEvent) {
@@ -63,7 +56,7 @@ function HeaderNav(props: Props) {
                 dispatch({type: ActionTypes.queryItem, searchQuery: query});
             }
         
-            result = (
+            return (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
                     <Searchbar 
@@ -76,7 +69,6 @@ function HeaderNav(props: Props) {
                     />
                 </Appbar.Header>
             );
-            break;
         default:
             // clear state from search
             if (clearQuery) {
@@ -90,7 +82,11 @@ function HeaderNav(props: Props) {
             break;
     }
 
-    return result;
+    return (
+        <Appbar.Header>
+            <Appbar.Content title="GrocerEZ"/>
+        </Appbar.Header>
+    );
 }
 
 const mapStateToProps = (state: State) => {

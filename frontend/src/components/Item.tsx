@@ -13,17 +13,10 @@ let picWidth = 60;
 
 // different ways to present the item
 export function ItemTag(props: Props) {
-    let tags = [];
-    let firstTag = true;
+    let tags = "";
 
-    for (let t in props.item.tags) {
-        let tempComp = <Text key={t}>, {props.item.tags[t]}</Text>;
-        if (firstTag) {
-            tempComp = <Text key={t}>{props.item.tags[t]}</Text>;
-            firstTag = false;
-        }
-        tags.push(tempComp);
-    }
+    // dealing with comma separated tags
+    tags = props.item.tags.join(", ");
 
     return (
         <View style={styles.item}>
@@ -41,7 +34,7 @@ export function ItemTag(props: Props) {
                 <Text style={styles.itemName}>
                     {props.item.name}
                 </Text>
-                <View style={styles.itemDetail}>{tags}</View>
+                <Text style={styles.itemDetail}>{tags}</Text>
             </View>
         </View>
     )
@@ -100,9 +93,6 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     itemDetail: {
-        display: "flex",
-        flexDirection: "row",
-        color: "black",
         opacity: 0.6,
         fontSize: 12,
     },
