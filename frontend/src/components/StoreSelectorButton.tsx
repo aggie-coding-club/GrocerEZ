@@ -24,6 +24,7 @@ function StoreSelector(props: Props) {
 
     const dispatch = useDispatch();
 
+    // toggles the store option (from single to multi store or vice versa)
     const toggleStoreOpt = () => {
         dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: !props.singleStoreActive});
     }
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     }
 });
 
+// maps the value for singleStoreActive stored in the Redux store to the current element
 const mapStateToProps = (state: State) => {
     return {
         singleStoreActive: state.store.isSingleStore!
