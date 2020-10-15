@@ -55,7 +55,7 @@ function HeaderNav(props: Props) {
                 // console.log(query);
                 dispatch({type: ActionTypes.queryItem, searchQuery: query});
             }
-        
+            
             return (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
@@ -81,7 +81,7 @@ function HeaderNav(props: Props) {
             }
             break;
     }
-
+  
     return (
         <Appbar.Header>
             <Appbar.Content title="GrocerEZ"/>
