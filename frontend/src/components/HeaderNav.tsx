@@ -3,22 +3,23 @@ import { StyleSheet, View, BackHandler } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import StoreSelector from './StoreSelectorButton';
-// import {  } from './SuggestionList';
 import { HeaderStates, GlobalStates } from '../constants/States';
 import { State } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';
+import { querySuggestions } from './Helper/AsyncCalls';
 
 interface Props {
     currState: HeaderStates
 }
 
+// header navigation for app
 function HeaderNav(props: Props) {
     const dispatch = useDispatch();
-    let [clearQuery, setClearQuery] = useState(() => false);
-    let [query, setQuery] = useState(() => "");
+    let [clearQuery, setClearQuery] = useState(false);
+    let [query, setQuery] = useState("");
     
     // Used to tell whether or not back button eventlistening has been added on Android devices
-    let [hasBackEvent, setHasBackEvent] = useState(() => false);
+    let [hasBackEvent, setHasBackEvent] = useState(false);
     function backButtonPressed() {
         dispatch({type: GlobalStates.listSelection});
         return true;
@@ -28,22 +29,16 @@ function HeaderNav(props: Props) {
         dispatch({type: GlobalStates.listSelection});
     }
 
-    let result = (
-        <Appbar.Header>
-            <Appbar.Content title="GrocerEZ"/>
-        </Appbar.Header>
-    );
     switch (props.currState) {
-        case HeaderStates.storeSelect:
-            result = (
+        case HeaderStates.storeSelect: // for final item selection with route
+            return (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
                     <Appbar.Content title="GrocerEZ" />
                     <StoreSelector/>
                 </Appbar.Header>
             );
-            break;
-        case HeaderStates.search:
+        case HeaderStates.search: // for search page
             // Implemented for convenient back button functionality for Android devices
             if (!hasBackEvent) {
                 BackHandler.addEventListener('hardwareBackPress', backButtonPressed);
@@ -52,6 +47,7 @@ function HeaderNav(props: Props) {
 
             const updateQuery = (changedQuery: string) => {
                 setQuery(changedQuery);
+                querySuggestions(dispatch, query);
             }
         
             const submitQuery = () => {
@@ -59,8 +55,8 @@ function HeaderNav(props: Props) {
                 // console.log(query);
                 dispatch({type: ActionTypes.queryItem, searchQuery: query});
             }
-        
-            result = (
+            
+            return (
                 <Appbar.Header>
                     <Appbar.BackAction onPress={backToItemList} />
                     <Searchbar 
@@ -73,7 +69,6 @@ function HeaderNav(props: Props) {
                     />
                 </Appbar.Header>
             );
-            break;
         default:
             // clear state from search
             if (clearQuery) {
@@ -86,8 +81,12 @@ function HeaderNav(props: Props) {
             }
             break;
     }
-
-    return result;
+  
+    return (
+        <Appbar.Header>
+            <Appbar.Content title="GrocerEZ"/>
+        </Appbar.Header>
+    );
 }
 
 const mapStateToProps = (state: State) => {

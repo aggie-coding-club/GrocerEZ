@@ -1,9 +1,11 @@
 import { HeaderStates, BottomStates, PageStates, GlobalStates } from './States';
 import { ActionTypes } from './ActionTypes';
 
+// TODO: update interface
 export interface Item {
     id: number,
     name: string,
+    pic: string, // url to pic
     tags: string[],
     price?: number, // this should be in cents
     store?: string
@@ -12,6 +14,7 @@ export interface Item {
 export interface Store {
     isSingleStore?: boolean,
     searchQuery?: string,
+    suggestions: string[],
     items: Item[]
 }
 
@@ -20,6 +23,11 @@ export interface State {
     bottomState: BottomStates,
     pageState: PageStates,
     store: Store
+}
+
+export interface suggestionAction {
+    type: ActionTypes,
+    suggestions: string[]
 }
 
 export interface searchAction {
@@ -51,4 +59,5 @@ export interface stateAction {
     type: GlobalStates
 }
 
-export type Action = stateAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;
+// abstract action to include all actions
+export type Action = stateAction | suggestionAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;

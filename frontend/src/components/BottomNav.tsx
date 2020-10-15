@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import {BottomStates, GlobalStates} from '../constants/States';
 import { FAB } from 'react-native-paper';
@@ -6,51 +6,61 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
 import { ActionTypes } from '../constants/ActionTypes';
+import { findItemsWithRoute } from './Helper/AsyncCalls';
 
 interface Props {
     currState: BottomStates
     items: Item[]
 }
 
+// bottom navigation of app
 function BottomNav(props: Props) {
         const dispatch = useDispatch();
 
-        let result= (<View></View>);
         switch (props.currState) {
-            case BottomStates.itemSelection:
-                let numItem = props.items.length;
+            case BottomStates.itemSelection: // initial item selection
+                let numItems = props.items.length;
                 
+                // for transitioning to search page
                 const queryItemScreen = () => {
                     dispatch({type: GlobalStates.searchQuery});
                 }
 
+                // for transitioning to final results page
                 const storeSelectDialog = () => {
                     Alert.alert("Route Selection", 
-                    "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
-                    [
-                        {
-                            text: "One Stop",
-                            style: "default",
-                            onPress: () => {
-                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
-                                // will be changed to loading screen later
-                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
+                        "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
+                        [
+                            {
+                                text: "One Stop",
+                                style: "default",
+                                onPress: () => {
+                                    // set route to be single store
+                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
+                                    // call loading screen
+                                    dispatch({type: GlobalStates.loadingScreen})
+                                    // backend call to find items with cheapest total price given a single store
+                                    findItemsWithRoute(dispatch, props.items, true);
+                                }
+                            },
+                            {
+                                text: "Multi Store",
+                                style: "default",
+                                onPress: () => {
+                                    // set route to be multi store
+                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
+                                    // call loading screen
+                                    dispatch({type: GlobalStates.loadingScreen})
+                                    // backend call to find items with cheapest total price given multiple stores
+                                    findItemsWithRoute(dispatch, props.items, false);
+                                }
                             }
-                        },
-                        {
-                            text: "Multi Store",
-                            style: "default",
-                            onPress: () => {
-                                dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
-                                // will be changed to loading screen later
-                                dispatch({type: GlobalStates.finalListSelection, updatedItems: []});
-                            }
-                        }
-                    ]
-                    )
+                        ],
+                        {cancelable: true}
+                    );
                 }
 
-                result = (
+                return (
                     <View style={styles.bottom}>
                         <FAB 
                         icon="plus"
@@ -59,7 +69,7 @@ function BottomNav(props: Props) {
                         />
                         <View style={styles.bar}>
                             <Text style={styles.bottomText}>
-                                {numItem} Items
+                                {numItems} Items
                             </Text>
                             <TouchableOpacity onPress={storeSelectDialog}>
                                 <Text style={styles.nextText}>
@@ -69,11 +79,12 @@ function BottomNav(props: Props) {
                         </View>
                     </View>
                 );
-                break;
-            case BottomStates.total:
-                const totalPrice = props.items.length > 0 ? props.items.reduce((total, {price}) => total + (price ? price : 0), 0) : 0;
+            case BottomStates.total: // final item selection page
+                // calculate price
+                let price = props.items.reduce((total, {price}) => total + (price ? price : 0), 0);
+                const totalPrice = (price / 100).toFixed(2)
 
-                result = (
+                return (
                     <View style={styles.bottom}>
                         <View style={styles.bar}>
                             <Text style={styles.bottomText}>
@@ -85,17 +96,19 @@ function BottomNav(props: Props) {
                         </View>
                     </View>
                 );
-                break;
         }
 
-        return result;
+        return (<View></View>);
 }
 
 const styles = StyleSheet.create({
     bottom: {
-        flex: 1,
+        display: "flex",
         justifyContent: 'flex-end',
         width: "100%",
+        position: "absolute",
+        zIndex: 10,
+        bottom: 0
     },
     centerButton: {
         position: 'absolute',

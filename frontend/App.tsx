@@ -1,15 +1,15 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './src/reducers/Reducer';
 import HeaderNav from './src/components/HeaderNav';
 import BottomNav from './src/components/BottomNav';
-import { HeaderStates, BottomStates, PageStates } from "./src/constants/States";
-import { State } from "./src/constants/Interfaces";
+import Page from './src/components/Page';
 
+// theme for react native
 const theme = {
   ...DefaultTheme,
   roundness: 2,
@@ -20,14 +20,18 @@ const theme = {
   },
 };
 
+// creating store for the entire app
 const store = createStore(rootReducer);
 
+// basic set up of the app
+// for the most part don't need to modify as will change with state
 export default function App() {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
           <SafeAreaView style={styles.container}>
             <HeaderNav/>
+            <Page/>
             <BottomNav/>
           </SafeAreaView>
       </PaperProvider>
@@ -37,7 +41,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
     backgroundColor: '#FAFAFA',
+    position: "relative",
+    height: "100%"
   },
 });

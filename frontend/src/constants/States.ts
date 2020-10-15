@@ -1,3 +1,4 @@
+// state types for element state reducer
 export enum HeaderStates {
     title,
     search,
@@ -13,8 +14,8 @@ export enum BottomStates {
 export enum PageStates {
     none,
     itemList,
-    itemListDialogue,
     itemListPrices,
+    suggestionList,
     searchResults,
     searchFilters,
     loading
@@ -25,7 +26,6 @@ export enum GlobalStates {
     searchQuery,
     searchFilter,
     searchResults,
-    optionsDialog,
     loadingScreen,
     finalListSelection
 }

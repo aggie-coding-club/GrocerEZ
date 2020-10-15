@@ -5,6 +5,7 @@ import
     updateItemsAction
 } from '../constants/Interfaces';
 
+// reducer for all element states
 export default function setState(state: State, action: Action) {
     switch (action.type) {
         case GlobalStates.listSelection:
@@ -19,7 +20,7 @@ export default function setState(state: State, action: Action) {
                 ...state,
                 headerState: HeaderStates.search,
                 bottomState: BottomStates.none,
-                pageState: PageStates.none,
+                pageState: PageStates.suggestionList,
             }
         case GlobalStates.searchFilter:
             return {

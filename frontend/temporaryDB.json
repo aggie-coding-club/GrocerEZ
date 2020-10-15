@@ -1,0 +1,81 @@
+{
+    "testItems": [
+        {
+            "id": 1,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 2,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 3,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 4,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 5,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 6,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3", "type1", "type2", "type3", "type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 7,
+            "name": "Apple",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 8,
+            "name": "Orange",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        },
+        {
+            "id": 9,
+            "name": "Tangerine",
+            "tags": ["type1", "type2", "type3"],
+            "price": 10,
+            "store": "HEB",
+            "pic": "https://picsum.photos/id/1080/200/300"
+        }
+    ],
+    "suggestions": [
+        "apple",
+        "apple pie",
+        "appealing"
+    ]
+}
