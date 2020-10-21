@@ -19,7 +19,7 @@ export async function findItemsWithRoute(dispatch: Function, items: Item[], isSi
 * query backend for search results to populate app
 */
 export async function queryItemSearch(query: string, page: number) {
-    // most likely paginatison will be needed
+    // most likely pagination will be needed
     // return results
     return [];
 }
@@ -36,22 +36,7 @@ export async function querySuggestions(dispatch: Function, query: string) {
 */
 export async function storeItems(items: Item[]) {
     try{
-        let testItems =  [ {
-            "id": 9,
-            "name": "Tangerine",
-            "pic": "https://picsum.photos/id/1080/200/300",
-            "price": 10,
-            "store": "HEB",
-            "tags": [
-              "type1",
-              "type2",
-              "type3",
-            ],
-          },
-        ]
-        
-        const jsonItems = JSON.stringify(testItems);
-        //const jsonItems = JSON.stringify(items);
+        const jsonItems = JSON.stringify(items);
         await AsyncStorage.setItem('@save_list', jsonItems);
     } catch (e) {
         //TODO

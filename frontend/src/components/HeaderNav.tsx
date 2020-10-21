@@ -29,28 +29,6 @@ function HeaderNav(props: Props) {
         dispatch({type: GlobalStates.listSelection});
     }
 
-    const previousListButtonPressed = async() => {
-        Alert.alert("Load previous list?", 
-            "Are you sure you want to load the last shopping list you made? Doing so will replace your currently selected items.", 
-            [
-                {
-                    text: "Yes",
-                    style: "default",
-                    onPress: async() => {
-                        const newItems = await retrieveItems();
-                        //console.log(newItems)
-                        dispatch({type: ActionTypes.replaceItems, newItems: newItems})
-                    }
-                },
-                {
-                    text: "Cancel",
-                    style: 'cancel'
-                }
-            ],
-            {cancelable: true}
-        );
-    }
-
     switch (props.currState) {
         case HeaderStates.storeSelect: // for final item selection with route
             return (
@@ -102,6 +80,30 @@ function HeaderNav(props: Props) {
                 setHasBackEvent(false);
             }
             break;
+    }
+
+    //for loading user's previous list
+    const previousListButtonPressed = async() => {
+        Alert.alert("Load previous list?", 
+            "Are you sure you want to load the last shopping list you made? Doing so will replace your currently selected items.", 
+            [
+                {
+                    text: "Yes",
+                    style: "default",
+                    onPress: async() => {
+                        //get previous list from localstorage
+                        const newItems = await retrieveItems();
+                        //replace current list with previous list
+                        dispatch({type: ActionTypes.replaceItems, newItems: newItems})
+                    }
+                },
+                {
+                    text: "Cancel",
+                    style: 'cancel'
+                }
+            ],
+            {cancelable: true}
+        );
     }
   
     return (
