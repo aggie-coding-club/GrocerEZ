@@ -1,12 +1,12 @@
 import React, { Component, useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, BackHandler } from 'react-native';
+import { StyleSheet, View, BackHandler, Alert } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import StoreSelector from './StoreSelectorButton';
 import { HeaderStates, GlobalStates } from '../constants/States';
 import { State } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';
-import { querySuggestions } from './Helper/AsyncCalls';
+import { querySuggestions, retrieveItems } from './Helper/AsyncCalls';
 
 interface Props {
     currState: HeaderStates
@@ -27,6 +27,28 @@ function HeaderNav(props: Props) {
     
     const backToItemList = () => {
         dispatch({type: GlobalStates.listSelection});
+    }
+
+    const previousListButtonPressed = async() => {
+        Alert.alert("Load previous list?", 
+            "Are you sure you want to load the last shopping list you made? Doing so will replace your currently selected items.", 
+            [
+                {
+                    text: "Yes",
+                    style: "default",
+                    onPress: async() => {
+                        const newItems = await retrieveItems();
+                        //console.log(newItems)
+                        dispatch({type: ActionTypes.replaceItems, newItems: newItems})
+                    }
+                },
+                {
+                    text: "Cancel",
+                    style: 'cancel'
+                }
+            ],
+            {cancelable: true}
+        );
     }
 
     switch (props.currState) {
@@ -84,6 +106,10 @@ function HeaderNav(props: Props) {
   
     return (
         <Appbar.Header>
+            <Appbar.Action
+            icon = "page-previous-outline"
+            onPress={previousListButtonPressed}
+            />
             <Appbar.Content title="GrocerEZ"/>
         </Appbar.Header>
     );

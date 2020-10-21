@@ -5,7 +5,8 @@ import
     searchAction, 
     addItemAction, 
     removeItemAction,
-    switchStoreAction, suggestionAction
+    switchStoreAction,
+    replaceItemsAction, suggestionAction
 } from "../constants/Interfaces";
 
 // reducer for all actions
@@ -50,6 +51,15 @@ export default function setAction(state : State, action: Action) {
                     items: filteredItems
                 }
             }
+        case ActionTypes.replaceItems:
+            return {
+                ...state,
+                store: {
+                    ...state.store,
+                    items: (action as replaceItemsAction).newItems
+                }
+            }
+
         case ActionTypes.changeStoreOpt:
             return {
                 ...state,
