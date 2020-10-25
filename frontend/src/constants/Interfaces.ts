@@ -1,12 +1,19 @@
 import { HeaderStates, BottomStates, PageStates, GlobalStates } from './States';
 import { ActionTypes } from './ActionTypes';
 
-// TODO: update interface
+export interface ItemFilter {
+    pricePer: string,
+    quantityRange: [number, number],
+    requiredTags: string[],
+    excludeTags: string[]
+}
+
 export interface Item {
     id: number,
     name: string,
     pic: string, // url to pic
     tags: string[],
+    filter: ItemFilter,
     price?: number, // this should be in cents
     store?: string
 }
