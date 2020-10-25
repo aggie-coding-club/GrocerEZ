@@ -1,2 +1,7 @@
-__pycache__/*
-
+__pycache__
+.pytest_cache
+db/db_password
+db/db_username
+scraper/*.log
+scraper/*.exe
+*.pyc
