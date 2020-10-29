@@ -27,6 +27,15 @@ function BottomNav(props: Props) {
                 }
 
                 // for transitioning to final results page
+                const handleDialogPress = (isSingleStore: boolean) => {
+                     // set route to be value of isSingleStore (single if true and multi if false)
+                     dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: isSingleStore});
+                     // call loading screen
+                     dispatch({type: GlobalStates.loadingScreen})
+                     // backend call to find items with cheapest total price given is single store or multi store
+                     findItemsWithRoute(dispatch, props.items, isSingleStore);
+                }
+
                 const storeSelectDialog = () => {
                     Alert.alert("Route Selection", 
                         "Do you want to limit your trip to one store or are you willing to go to multiple stores to get better prices?", 
@@ -35,24 +44,14 @@ function BottomNav(props: Props) {
                                 text: "One Stop",
                                 style: "default",
                                 onPress: () => {
-                                    // set route to be single store
-                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
-                                    // call loading screen
-                                    dispatch({type: GlobalStates.loadingScreen})
-                                    // backend call to find items with cheapest total price given a single store
-                                    findItemsWithRoute(dispatch, props.items, true);
+                                   handleDialogPress(true);
                                 }
                             },
                             {
                                 text: "Multi Store",
                                 style: "default",
                                 onPress: () => {
-                                    // set route to be multi store
-                                    dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
-                                    // call loading screen
-                                    dispatch({type: GlobalStates.loadingScreen})
-                                    // backend call to find items with cheapest total price given multiple stores
-                                    findItemsWithRoute(dispatch, props.items, false);
+                                   handleDialogPress(false);
                                 }
                             }
                         ],
