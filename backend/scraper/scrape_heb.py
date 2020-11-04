@@ -74,14 +74,16 @@ class HEBScraper():
         try:
             quantity = soup.find('div', {'class': 'pdp-mobile-title-price-section'}) #specific div container for item count could not be parsed, instead used parent div container 
             quantity_array = quantity.text.split() #split items into list to parse 
-            
+            #going through all items found in parent div container and looking for quantity
             for x in quantity_array:
                 if x == 'oz' or x == 'ct':
-                    product_found = True
+                    quantity_found = True
                     index = quantity_array.index(x)
 
-            if product_found: # if a net weight or item count is found, its value will come directly before
-                quantity_string = quantity_array[index-1] + ' ' + quantity_array[index]
+            if quantity_found: # if units are found, then item quantity will come directly before
+                quantity_numerical_value = quantity_array[index - 1]
+                quantity_units = quantity_array[index]
+                quantity_string = quantity_numerical_value + ' ' + quantity_units
             else:
                 quantity_string = None
 
