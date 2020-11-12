@@ -111,7 +111,7 @@ function HeaderNav(props: Props) {
     // for adding an item to the current users list
     const addButtonPressed = () => {
         // currently implemented for testing with button
-        const item = JSON.parse(JSON.stringify(temporaryDB['testItems'][Math.floor(Math.random() * 9)])) // get a new copy of a random item
+        const item = {...(temporaryDB['testItems'][Math.floor(Math.random() * 9)])} // get a new copy of a random item
         item.id = props.items.length //prevents duplicate ids
         dispatch({type: ActionTypes.addItem, addedItem: item})
         // update local storage
