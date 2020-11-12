@@ -8,6 +8,7 @@ import rootReducer from './src/reducers/Reducer';
 import HeaderNav from './src/components/HeaderNav';
 import BottomNav from './src/components/BottomNav';
 import Page from './src/components/Page';
+import {loadStoredItems} from './src/components/Helper/AsyncCalls'
 
 // theme for react native
 const theme = {
@@ -22,6 +23,9 @@ const theme = {
 
 // creating store for the entire app
 const store = createStore(rootReducer);
+
+// load store with most recent list
+loadStoredItems(store.dispatch)
 
 // basic set up of the app
 // for the most part don't need to modify as will change with state

@@ -30,7 +30,7 @@ export default function setAction(state : State, action: Action) {
                 }
             }
         case ActionTypes.addItem:
-            let newItems = state.store.items;
+            let newItems = [...state.store.items];
             newItems.push((action as addItemAction).addedItem);
             
             return {
@@ -59,7 +59,6 @@ export default function setAction(state : State, action: Action) {
                     items: (action as replaceItemsAction).newItems
                 }
             }
-
         case ActionTypes.changeStoreOpt:
             return {
                 ...state,

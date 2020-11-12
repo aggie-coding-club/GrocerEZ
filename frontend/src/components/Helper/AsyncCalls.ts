@@ -39,21 +39,28 @@ export async function storeItems(items: Item[]) {
         const jsonItems = JSON.stringify(items);
         await AsyncStorage.setItem('@save_list', jsonItems);
     } catch (e) {
-        //TODO
-        //could alert user
+        console.log(e);
     }
 }
 
 /*
-* store selected items in local storage
+* retrieve items in local storage
 */
 export async function retrieveItems() {
     try{
         const jsonItems = await AsyncStorage.getItem('@save_list');
-        const items:Item[] = jsonItems != null ? JSON.parse(jsonItems) : null;
-        return items;
+        if(jsonItems !== null) {
+            return JSON.parse(jsonItems);
+        }
     } catch (e) {
-        //TODO
-        //could alert user
+        console.log(e);
     }
+    return [];
+}
+
+/*
+*fill in store with stored list
+*/
+export async function loadStoredItems(dispatch: Function) {
+    dispatch({type: ActionTypes.replaceItems, newItems: await retrieveItems()});
 }

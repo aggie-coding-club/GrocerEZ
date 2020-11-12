@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { State, Item } from '../constants/Interfaces';
 import { connect, useDispatch } from 'react-redux';
 import { ActionTypes } from '../constants/ActionTypes';
-import { findItemsWithRoute, storeItems } from './Helper/AsyncCalls';
+import { findItemsWithRoute } from './Helper/AsyncCalls';
 
 interface Props {
     currState: BottomStates
@@ -39,8 +39,6 @@ function BottomNav(props: Props) {
                                     dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: true});
                                     // call loading screen
                                     dispatch({type: GlobalStates.loadingScreen})
-                                    // call to store list in local storage
-                                    storeItems(props.items);
                                     // backend call to find items with cheapest total price given a single store
                                     findItemsWithRoute(dispatch, props.items, true);
                                 }
@@ -53,8 +51,6 @@ function BottomNav(props: Props) {
                                     dispatch({type: ActionTypes.changeStoreOpt, isSingleStore: false});
                                     // call loading screen
                                     dispatch({type: GlobalStates.loadingScreen})
-                                    // call to store list in local storage
-                                    storeItems(props.items);
                                     // backend call to find items with cheapest total price given multiple stores
                                     findItemsWithRoute(dispatch, props.items, false);
                                 }
