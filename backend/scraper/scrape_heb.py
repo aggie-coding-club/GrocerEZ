@@ -109,7 +109,7 @@ class HEBScraper():
 # Execution of Main Program with a __name__ guard
 if __name__ == "__main__":
     scraper = HEBScraper()
-    product_name = 'lettuce'
+    product_name = 'Peaches with fuzz'
     item_list = scraper.getProduct(product_name)
 
     # Printing results
@@ -145,5 +145,5 @@ if __name__ == "__main__":
             print('Quantity: Could not find the information')
         else:
             print("Quantity: " + item['quantity'])
-
+            
         print()

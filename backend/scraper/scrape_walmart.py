@@ -4,11 +4,12 @@ import requests
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 import sys
 
-class WalmartScraper:
+class WalmartScraper():
     zipSet = False
     def __init__(self):
         if len(sys.argv) != 2:
@@ -19,8 +20,18 @@ class WalmartScraper:
             chrome_options = Options()
             chrome_options.add_argument('--headless')
             try:
-                driver = r'./chromedriver.exe'
-                self.driver = webdriver.Chrome(driver, options=chrome_options)
+                self.driver = webdriver.Chrome(ChromeDriverManager().install())
+                self.driver.get("https://www.walmart.com/")
+                #self.driver.get = webdriver.Chrome(driver, options=chrome_options)
+                # Get cookies for request session - needed for getting each product
+                cookies = self.driver.get_cookies()
+                self.driver.quit()
+                 # Creating a session
+                self.session = requests.Session()
+                # PLace cookies in the session cookie jar
+                [self.session.cookies.set(cookie['name'], cookie['value']) for cookie in cookies]
+                
+                
             except:
                 sys.exit('Chrome web driver is missing')
         elif browser.lower() == 'firefox':
@@ -32,7 +43,8 @@ class WalmartScraper:
             sys.exit('Choose either chrome or firefox for browser.')
 
     def get_product(self, product_name, zip_code):
-        self.driver.get('https://www.walmart.com/search/?query=' + product_name)
+        self.session.get('https://www.walmart.com/search/?query=' + product_name)
+
         URLS = self.get_product_urls(product_name)
 
         product_information = [] #List of dictionaries, containing product information
@@ -47,7 +59,7 @@ class WalmartScraper:
         return product_information
 
     def get_product_urls(self, queryString):
-        self.driver.get('https://www.walmart.com/search/?query=' + queryString)
+        self.session.get('https://www.walmart.com/search/?query=' + queryString)
         URLS = []
         for link in self.driver.find_element_by_class_name('search-product-result').find_elements_by_tag_name('a'):
             if (link.get_attribute('class') == 'search-result-productimage gridview display-block'):
