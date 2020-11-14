@@ -30,8 +30,7 @@ export default function setAction(state : State, action: Action) {
                 }
             }
         case ActionTypes.addItem:
-            let newItems = [...state.store.items];
-            newItems.push((action as addItemAction).addedItem);
+            let newItems = [...state.store.items, (action as addItemAction).addedItem];
             
             return {
                 ...state,

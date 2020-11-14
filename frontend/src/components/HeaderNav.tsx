@@ -6,7 +6,7 @@ import StoreSelector from './StoreSelectorButton';
 import { HeaderStates, GlobalStates } from '../constants/States';
 import { State, Item } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';
-import { querySuggestions, storeItems} from './Helper/AsyncCalls';
+import { querySuggestions, updateItems, addItem} from './Helper/AsyncCalls';
 import temporaryDB from '../../temporaryDB.json'; // FIXME: will be removed later
 
 interface Props {
@@ -94,9 +94,7 @@ function HeaderNav(props: Props) {
                     style: "default",
                     onPress: () => {
                         // replace current list with empty list
-                        dispatch({type: ActionTypes.replaceItems, newItems: []})
-                        // update local storage
-                        storeItems([])
+                        dispatch(updateItems([]))
                     }
                 },
                 {
@@ -113,11 +111,7 @@ function HeaderNav(props: Props) {
         // currently implemented for testing with button
         const item = {...(temporaryDB['testItems'][Math.floor(Math.random() * 9)])} // get a new copy of a random item
         item.id = props.items.length //prevents duplicate ids
-        dispatch({type: ActionTypes.addItem, addedItem: item})
-        // update local storage
-        const items = [...props.items]
-        items.push(item)
-        storeItems(items)
+        dispatch(addItem(item))
     }
   
     return (

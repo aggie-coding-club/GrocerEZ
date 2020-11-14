@@ -32,7 +32,7 @@ export async function querySuggestions(dispatch: Function, query: string) {
 }
 
 /*
-* store selected items in local storage
+* update store with new item list
 */
 export async function storeItems(items: Item[]) {
     try{
@@ -40,6 +40,25 @@ export async function storeItems(items: Item[]) {
         await AsyncStorage.setItem('@save_list', jsonItems);
     } catch (e) {
         console.log(e);
+    }
+}
+
+/*
+* update the store and local storage with new item list
+*/
+export function updateItems(items: Item[]) {
+    return function(dispatch: Function) {
+        storeItems(items);
+        dispatch({type: ActionTypes.replaceItems, newItems: items})
+    }
+}
+
+/*
+* add item to store and local storage
+*/
+export function addItem(item:Item) {
+    return function(dispatch: Function, getState: Function){
+        dispatch(updateItems([...getState().store.items, item]))
     }
 }
 
@@ -59,7 +78,7 @@ export async function retrieveItems() {
 }
 
 /*
-*fill in store with stored list
+* fill in store with stored list
 */
 export async function loadStoredItems(dispatch: Function) {
     dispatch({type: ActionTypes.replaceItems, newItems: await retrieveItems()});
