@@ -34,11 +34,11 @@ class WalmartScraper():
                 
             except:
                 sys.exit('Chrome web driver is missing')
-        elif browser.lower() == 'firefox':
-            try:
-                self.driver = webdriver.Firefox(executable_path=r'.\geckodriver.exe')
-            except:
-                sys.exit("Web Driver is missing")
+        # elif browser.lower() == 'firefox':
+        #     try:
+        #         self.driver = webdriver.Firefox(executable_path=r'.\geckodriver.exe')
+        #     except:
+        #         sys.exit("Web Driver is missing")
         else:
             sys.exit('Choose either chrome or firefox for browser.')
 
