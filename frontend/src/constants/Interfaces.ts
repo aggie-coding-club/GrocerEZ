@@ -45,6 +45,11 @@ export interface removeItemAction {
     removeItem: number // ID of item
 }
 
+export interface replaceItemsAction {
+    type: ActionTypes,
+    newItems: Item[]
+}
+
 export interface updateItemsAction {
     type: GlobalStates,
     updatedItems: Item[]
@@ -60,4 +65,4 @@ export interface stateAction {
 }
 
 // abstract action to include all actions
-export type Action = stateAction | suggestionAction | searchAction | addItemAction | removeItemAction | updateItemsAction | switchStoreAction;
+export type Action = stateAction | suggestionAction | searchAction | addItemAction | removeItemAction |replaceItemsAction | updateItemsAction | switchStoreAction;

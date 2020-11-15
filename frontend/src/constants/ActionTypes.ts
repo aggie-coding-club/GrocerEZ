@@ -4,5 +4,6 @@ export enum ActionTypes {
     queryItem = "queryItem",
     addItem = "addItem",
     removeItem = "removeItem",
-    changeStoreOpt = "changeStoreOpt"
+    changeStoreOpt = "changeStoreOpt",
+    replaceItems = "replaceItems"
 }

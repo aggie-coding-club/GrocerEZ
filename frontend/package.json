@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@types/react-native-material-ui": "^1.32.0",
     "@types/react-redux": "^7.1.9",
     "expo": "~37.0.3",
@@ -28,7 +29,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.8.6",

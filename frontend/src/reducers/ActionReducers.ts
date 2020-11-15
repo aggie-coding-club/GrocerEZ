@@ -5,7 +5,8 @@ import
     searchAction, 
     addItemAction, 
     removeItemAction,
-    switchStoreAction, suggestionAction
+    switchStoreAction,
+    replaceItemsAction, suggestionAction
 } from "../constants/Interfaces";
 
 // reducer for all actions
@@ -29,8 +30,7 @@ export default function setAction(state : State, action: Action) {
                 }
             }
         case ActionTypes.addItem:
-            let newItems = state.store.items;
-            newItems.push((action as addItemAction).addedItem);
+            let newItems = [...state.store.items, (action as addItemAction).addedItem];
             
             return {
                 ...state,
@@ -48,6 +48,14 @@ export default function setAction(state : State, action: Action) {
                 store: {
                     ...state.store,
                     items: filteredItems
+                }
+            }
+        case ActionTypes.replaceItems:
+            return {
+                ...state,
+                store: {
+                    ...state.store,
+                    items: (action as replaceItemsAction).newItems
                 }
             }
         case ActionTypes.changeStoreOpt:

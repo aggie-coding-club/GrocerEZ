@@ -1,15 +1,17 @@
 import React, { Component, useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, BackHandler } from 'react-native';
+import { StyleSheet, View, BackHandler, Alert } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import StoreSelector from './StoreSelectorButton';
 import { HeaderStates, GlobalStates } from '../constants/States';
-import { State } from '../constants/Interfaces';
+import { State, Item } from '../constants/Interfaces';
 import { ActionTypes } from '../constants/ActionTypes';
-import { querySuggestions } from './Helper/AsyncCalls';
+import { querySuggestions, updateItems, addItem} from './Helper/AsyncCalls';
+import temporaryDB from '../../temporaryDB.json'; // FIXME: will be removed later
 
 interface Props {
-    currState: HeaderStates
+    currState: HeaderStates,
+    items: Item[]
 }
 
 // header navigation for app
@@ -81,17 +83,56 @@ function HeaderNav(props: Props) {
             }
             break;
     }
+
+    // for clearing users current list
+    const clearButtonPressed = () => {
+        Alert.alert("Clear current list?", 
+            "Are you sure you want to clear your current shopping list?", 
+            [
+                {
+                    text: "Yes",
+                    style: "default",
+                    onPress: () => {
+                        // replace current list with empty list
+                        dispatch(updateItems([]))
+                    }
+                },
+                {
+                    text: "Cancel",
+                    style: 'cancel'
+                }
+            ],
+            {cancelable: true}
+        );
+    }
+
+    // for adding an item to the current users list
+    const addButtonPressed = () => {
+        // currently implemented for testing with button
+        const item = {...(temporaryDB['testItems'][Math.floor(Math.random() * 9)])} // get a new copy of a random item
+        item.id = props.items.length //prevents duplicate ids
+        dispatch(addItem(item))
+    }
   
     return (
         <Appbar.Header>
             <Appbar.Content title="GrocerEZ"/>
+            <Appbar.Action       // for testing
+            icon = "plus"
+            onPress={addButtonPressed}
+            />
+            <Appbar.Action
+            icon = "delete-empty"
+            onPress={clearButtonPressed}
+            />
         </Appbar.Header>
     );
 }
 
 const mapStateToProps = (state: State) => {
     return {
-        currState: state.headerState
+        currState: state.headerState,
+        items: state.store.items
     }
 }
 
