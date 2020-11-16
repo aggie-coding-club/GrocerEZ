@@ -44,7 +44,6 @@ class HEBScraper():
         soup = BeautifulSoup(page.text, 'html.parser')
 
         # Find values of each attribute
-
         # Get the products name
         try:
             title_section = soup.find('h1', {'itemprop': 'name'})
@@ -53,6 +52,7 @@ class HEBScraper():
             product_title = None
             pass
 
+            
         # Get the products price
         try:
             price = soup.find('div', {'class': 'sale2'})
@@ -70,6 +70,29 @@ class HEBScraper():
             image_link = None
             pass
 
+        #Get the products quantity / net weight
+        try:
+            quantity = soup.find('div', {'class': 'pdp-mobile-title-price-section'}) #specific div container for item count could not be parsed, instead used parent div container 
+            quantity_array = quantity.text.split() #split items into list to parse 
+            #going through all items found in parent div container and looking for quantity
+            for x in quantity_array:
+                if x == 'oz' or x == 'ct':
+                    quantity_found = True
+                    index = quantity_array.index(x)
+
+            if quantity_found: # if units are found, then item quantity will come directly before
+                quantity_numerical_value = quantity_array[index - 1]
+                quantity_units = quantity_array[index]
+                quantity_string = quantity_numerical_value + ' ' + quantity_units
+            else:
+                quantity_string = None
+
+        except:
+            quantity_string = None
+            pass 
+
+        
+
         # Get the products rating
         rating_string = None
 
@@ -80,13 +103,13 @@ class HEBScraper():
             page_text = None
 
         # Return dictionary of product information
-        product_details = {'product-title': product_title, 'price': price_string, 'image': image_link, 'rating': rating_string, 'error_page': page_text}
+        product_details = {'product-title': product_title, 'price': price_string, 'image': image_link, 'rating': rating_string, 'error_page': page_text, 'quantity': quantity_string}
         return product_details
 
 # Execution of Main Program with a __name__ guard
 if __name__ == "__main__":
     scraper = HEBScraper()
-    product_name = 'lettuce'
+    product_name = 'Peaches with fuzz'
     item_list = scraper.getProduct(product_name)
 
     # Printing results
@@ -117,5 +140,10 @@ if __name__ == "__main__":
             print('Page: Could not find the information')
         else:
             print("Page: " + item['error_page'])
-
+        
+        if(item['quantity'] is None):
+            print('Quantity: Could not find the information')
+        else:
+            print("Quantity: " + item['quantity'])
+            
         print()
